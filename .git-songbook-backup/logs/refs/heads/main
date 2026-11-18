@@ -1,0 +1,23 @@
+0000000000000000000000000000000000000000 891f5c95686879bd149c852030b9d181a722bf55 SangunJo <sangun56@naver.com> 1792559376 +0900	clone: from https://github.com/tkdus0702-ctrl/sangchu-songbook.git
+891f5c95686879bd149c852030b9d181a722bf55 110ef600d0cf712fb9b04b2fd5937cb1b2f3dc76 SangunJo <sangun56@naver.com> 1792561624 +0900	commit: overlay transparency
+110ef600d0cf712fb9b04b2fd5937cb1b2f3dc76 4ff2e1b5e1df3fd37555521ea6f271b54a1735ef SangunJo <sangun56@naver.com> 1792597624 +0900	commit: update
+4ff2e1b5e1df3fd37555521ea6f271b54a1735ef 61658544ecab06439b59b916a1b938d9002a7893 SangunJo <sangun56@naver.com> 1792603852 +0900	commit: logo update
+61658544ecab06439b59b916a1b938d9002a7893 40dfeb70c1f5c5a8537405e960edd0d10ee4f4db SangunJo <sangun56@naver.com> 1792604036 +0900	commit: logo update2
+40dfeb70c1f5c5a8537405e960edd0d10ee4f4db 231883d76ae0b96234beaa418789e2e261e3bbcd SangunJo <sangun56@naver.com> 1792748662 +0900	commit: api test
+231883d76ae0b96234beaa418789e2e261e3bbcd a5bace2136b5ddcc2643a38be8ed3e9188abea7f SangunJo <sangun56@naver.com> 1792748989 +0900	commit: api test2
+a5bace2136b5ddcc2643a38be8ed3e9188abea7f ce8553ec47c2164ccfcc958ce3b03e1b0d81aa16 SangunJo <sangun56@naver.com> 1792749846 +0900	commit: api test3
+ce8553ec47c2164ccfcc958ce3b03e1b0d81aa16 4d8e96b4464c7f9513fc229431834e130756c45d SangunJo <sangun56@naver.com> 1792750925 +0900	commit: api test4
+4d8e96b4464c7f9513fc229431834e130756c45d 54842caecdda9d7d29e5120188773c0b49580822 SangunJo <sangun56@naver.com> 1792751153 +0900	commit: api test5
+54842caecdda9d7d29e5120188773c0b49580822 067f0abeb55188492fddd30096d873fdcb2140af SangunJo <sangun56@naver.com> 1792752885 +0900	commit: api test6
+067f0abeb55188492fddd30096d873fdcb2140af ca1864f45776c1793fdc196dce4fb441aeb45ff4 SangunJo <sangun56@naver.com> 1792753077 +0900	commit: api test7
+ca1864f45776c1793fdc196dce4fb441aeb45ff4 96a7f5dd9332cc8fd417db6eaaf2fa90fe785563 SangunJo <sangun56@naver.com> 1792754710 +0900	commit: api test8
+96a7f5dd9332cc8fd417db6eaaf2fa90fe785563 9cb8e7645c9a232ae57bd51327c08140825088e9 SangunJo <sangun56@naver.com> 1792755096 +0900	commit: api test9
+9cb8e7645c9a232ae57bd51327c08140825088e9 b31b2c2cf77488bd04c7cd4642fab1d6ed4d2d70 SangunJo <sangun56@naver.com> 1792755324 +0900	commit: api test10
+b31b2c2cf77488bd04c7cd4642fab1d6ed4d2d70 e0ebcb4f21908c3d5a05159c84c76979fd9f4d30 SangunJo <sangun56@naver.com> 1792757028 +0900	commit: apiv1
+e0ebcb4f21908c3d5a05159c84c76979fd9f4d30 2d32937d4ca1abe99ee20dab8f3be7492b358d95 SangunJo <sangun56@naver.com> 1793366324 +0900	commit: category change
+2d32937d4ca1abe99ee20dab8f3be7492b358d95 a42f4b84b6818abb434ff26b709403a30cafcae1 SangunJo <sangun56@naver.com> 1793432963 +0900	commit: minor 0.0.1v
+a42f4b84b6818abb434ff26b709403a30cafcae1 1e0e1232155b18d22c96038012b5f4251c3766ce SangunJo <sangun56@naver.com> 1793615775 +0900	commit: category setting change
+1e0e1232155b18d22c96038012b5f4251c3766ce c05285c85d2d159f0581103e9f73421614969eb4 SangunJo <sangun56@naver.com> 1794542020 +0900	commit: cute song ban
+c05285c85d2d159f0581103e9f73421614969eb4 be9c9e2a2641b8777fca7f24ef282b3680fe767e SangunJo <sangun56@naver.com> 1795040161 +0900	commit: fanpage
+be9c9e2a2641b8777fca7f24ef282b3680fe767e dfe35ffc1191607980630c10a5c4ad7dcb49cbde SangunJo <sangun56@naver.com> 1795040409 +0900	revert: Revert "fanpage"
+dfe35ffc1191607980630c10a5c4ad7dcb49cbde dfe35ffc1191607980630c10a5c4ad7dcb49cbde SangunJo <sangun56@naver.com> 1795040664 +0900	Branch: renamed refs/heads/main to refs/heads/main
