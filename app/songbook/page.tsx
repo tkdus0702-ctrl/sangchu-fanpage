@@ -1678,10 +1678,10 @@ const matchesCategory =
   });
 
   return (
-    <main className="min-h-screen bg-[#f3faf5] text-[#263c32]">
+    <main className="min-h-screen bg-[#f7f9f0] text-[#416b36]">
       {/* 헤더 */}
-      <header className="border-b border-[#d9e9de] bg-[#f3faf5]">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+      <header className="border-b border-[#dce8c6] bg-[#f7f9f0]">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6">
           <div
             onClick={() =>
               window.scrollTo({
@@ -1698,7 +1698,7 @@ const matchesCategory =
     className="h-15 w-22 rounded-full object-contain"
   />
               <div>
-         <h1 className="flex items-center gap-2 text-xl font-extrabold tracking-tight text-[#315b49]">
+         <h1 className="flex items-center gap-2 text-xl font-extrabold tracking-tight text-[#416b36]">
   유상츄 노래책  🎙️
   <button
     type="button"
@@ -1707,13 +1707,13 @@ const matchesCategory =
       setNoticeOpen((value) => !value);
       setNoticeEditing(false);
     }}
-    className="rounded-full border border-[#d9e9de] bg-white px-2.5 py-1.5 text-xs font-semibold text-[#5b9877] shadow-sm transition hover:bg-[#e8f4ec] sm:text-sm ml-3 "
+    className="rounded-full border border-[#dce8c6] bg-white px-2.5 py-1.5 text-xs font-semibold text-[#8caf59] shadow-sm transition hover:bg-[#edf5df] sm:text-sm ml-3 "
   >
     📢 {notice.title || "노래책 공지"}
   </button>
 </h1>
 
-                <p className="mt-0.5 text-xs text-[#718f7e]">
+                <p className="mt-0.5 text-xs text-[#82936e]">
                   SOOP 버츄얼 스트리머 유상츄의 노래책 ♫
                 </p>
               </div>
@@ -1726,7 +1726,7 @@ const matchesCategory =
                 onClick={() =>
                   setShowLogin(true)
                 }
-                className="rounded-full border border-[#d3e5d9] bg-white px-4 py-2 text-sm font-medium text-[#5b9877] transition hover:bg-[#e8f4ec]"
+                className="rounded-full border border-[#dce8c6] bg-white px-4 py-2 text-sm font-medium text-[#8caf59] transition hover:bg-[#edf5df]"
               >
                 🔒 관리자 로그인
               </button>
@@ -1739,7 +1739,7 @@ const matchesCategory =
                     window.location.href =
                       "/add";
                   }}
-                  className="rounded-full bg-[#5b9877] px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#3e7558] hover:shadow-md"
+                  className="rounded-full bg-[#8caf59] px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#739b45] hover:shadow-md"
                 >
                   + 노래 추가
                 </button>
@@ -1752,7 +1752,7 @@ const matchesCategory =
         void connectSoopChat();
       }}
       disabled={soopBusy || soopLoggingOut}
-      className="rounded-full border border-[#d9e9de] bg-white px-3 py-2 text-sm font-medium text-[#5b9877] transition hover:bg-[#e3efe7] disabled:cursor-not-allowed disabled:opacity-60"
+      className="rounded-full border border-[#dce8c6] bg-white px-3 py-2 text-sm font-medium text-[#8caf59] transition hover:bg-[#e4efd5] disabled:cursor-not-allowed disabled:opacity-60"
     >
       {soopBusy ? "⏳ SOOP 연결 중..." : "📡 SOOP API 연결"}
     </button>
@@ -1775,7 +1775,7 @@ const matchesCategory =
             void connectSoopChat();
           }}
           disabled={soopBusy || soopLoggingOut}
-          className="rounded-full border border-[#d9e9de] bg-white px-3 py-2 text-sm font-medium text-[#5b9877] transition hover:bg-[#e3efe7] disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-full border border-[#dce8c6] bg-white px-3 py-2 text-sm font-medium text-[#8caf59] transition hover:bg-[#e4efd5] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {soopBusy ? "⏳ 채팅 연결 중..." : "🔄 채팅 재연결"}
         </button>
@@ -1783,7 +1783,7 @@ const matchesCategory =
     </>
   )}
 </div>
-<span className="max-w-40 truncate text-xs text-[#718f7e]" title={soopStatus}>
+<span className="max-w-40 truncate text-xs text-[#82936e]" title={soopStatus}>
   {`SOOP: ${soopStatus}`}
 </span>
                 <button
@@ -1791,7 +1791,7 @@ const matchesCategory =
                     handleUpdateCovers
                   }
                   disabled={updatingCovers}
-                  className="rounded-full border border-[#d3e5d9] bg-white px-4 py-2 text-sm font-medium text-[#5b9877] transition hover:bg-[#e8f4ec] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-full border border-[#dce8c6] bg-white px-4 py-2 text-sm font-medium text-[#8caf59] transition hover:bg-[#edf5df] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {updatingCovers
                     ? "🖼️ " +
@@ -1805,7 +1805,7 @@ const matchesCategory =
                   onClick={
                     handleAdminLogout
                   }
-                  className="rounded-full border border-[#d3e5d9] bg-white px-4 py-2 text-sm font-medium text-[#5b9877] transition hover:bg-[#e8f4ec]"
+                  className="rounded-full border border-[#dce8c6] bg-white px-4 py-2 text-sm font-medium text-[#8caf59] transition hover:bg-[#edf5df]"
                 >
                   로그아웃
                 </button>
@@ -1819,22 +1819,22 @@ const matchesCategory =
         <section className="mx-auto mt-4 max-w-6xl px-4 sm:px-6">
           <div className="rounded-2xl border border-[#cfe2d5] bg-white p-4 shadow-sm sm:p-5">
             <div className="flex items-center justify-between gap-3">
-              <h2 className="font-bold text-[#315b49]">📢 {notice.title}</h2>
+              <h2 className="font-bold text-[#416b36]">📢 {notice.title}</h2>
               <div className="flex shrink-0 gap-2">
-                {isAdmin && !noticeEditing && <button type="button" onClick={() => { setNoticeTitleDraft(notice.title); setNoticeContentDraft(notice.content); setNoticeEditing(true); }} className="rounded-lg border border-[#d9e9de] px-3 py-1.5 text-xs font-semibold text-[#5b9877]">수정</button>}
-                <button type="button" onClick={() => setNoticeOpen(false)} className="rounded-lg bg-[#edf6f0] px-3 py-1.5 text-xs text-[#5b9877]">닫기 ✕</button>
+                {isAdmin && !noticeEditing && <button type="button" onClick={() => { setNoticeTitleDraft(notice.title); setNoticeContentDraft(notice.content); setNoticeEditing(true); }} className="rounded-lg border border-[#dce8c6] px-3 py-1.5 text-xs font-semibold text-[#8caf59]">수정</button>}
+                <button type="button" onClick={() => setNoticeOpen(false)} className="rounded-lg bg-[#f7f9f0] px-3 py-1.5 text-xs text-[#8caf59]">닫기 ✕</button>
               </div>
             </div>
             {noticeEditing ? (
               <div className="mt-3 space-y-3">
-                <input value={noticeTitleDraft} onChange={(e) => setNoticeTitleDraft(e.target.value)} maxLength={60} placeholder="공지 제목" className="w-full rounded-xl border border-[#d9e9de] px-3 py-2 text-sm outline-none focus:border-[#5b9877]" />
-                <textarea value={noticeContentDraft} onChange={(e) => setNoticeContentDraft(e.target.value)} rows={5} maxLength={5000} placeholder="공지 내용을 입력해주세요." className="w-full resize-y rounded-xl border border-[#d9e9de] px-3 py-2 text-sm outline-none focus:border-[#5b9877]" />
+                <input value={noticeTitleDraft} onChange={(e) => setNoticeTitleDraft(e.target.value)} maxLength={60} placeholder="공지 제목" className="w-full rounded-xl border border-[#dce8c6] px-3 py-2 text-sm outline-none focus:border-[#8caf59]" />
+                <textarea value={noticeContentDraft} onChange={(e) => setNoticeContentDraft(e.target.value)} rows={5} maxLength={5000} placeholder="공지 내용을 입력해주세요." className="w-full resize-y rounded-xl border border-[#dce8c6] px-3 py-2 text-sm outline-none focus:border-[#8caf59]" />
                 <div className="flex justify-end gap-2">
-                  <button type="button" onClick={() => setNoticeEditing(false)} className="rounded-lg border border-[#d9e9de] px-4 py-2 text-sm text-[#718f7e]">취소</button>
-                  <button type="button" onClick={() => void saveNotice()} disabled={noticeSaving} className="rounded-lg bg-[#5b9877] px-4 py-2 text-sm font-semibold text-white disabled:opacity-50">{noticeSaving ? "저장 중..." : "저장"}</button>
+                  <button type="button" onClick={() => setNoticeEditing(false)} className="rounded-lg border border-[#dce8c6] px-4 py-2 text-sm text-[#82936e]">취소</button>
+                  <button type="button" onClick={() => void saveNotice()} disabled={noticeSaving} className="rounded-lg bg-[#8caf59] px-4 py-2 text-sm font-semibold text-white disabled:opacity-50">{noticeSaving ? "저장 중..." : "저장"}</button>
                 </div>
               </div>
-            ) : <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-[#496d56]">{notice.content}</p>}
+            ) : <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-[#416b36]">{notice.content}</p>}
           </div>
         </section>
       )}
@@ -1847,7 +1847,7 @@ const matchesCategory =
               관리자 로그인
             </h2>
 
-            <p className="mt-1 text-sm text-[#718f7e]">
+            <p className="mt-1 text-sm text-[#82936e]">
               관리자 비밀번호를 입력해주세요.
             </p>
 
@@ -1865,7 +1865,7 @@ const matchesCategory =
                 }
               }}
               placeholder="비밀번호"
-              className="mt-5 w-full rounded-xl border border-[#d9e9de] bg-[#f3faf5] px-4 py-3 text-sm outline-none focus:border-[#5b9877]"
+              className="mt-5 w-full rounded-xl border border-[#dce8c6] bg-[#f7f9f0] px-4 py-3 text-sm outline-none focus:border-[#8caf59]"
               autoFocus
             />
 
@@ -1875,7 +1875,7 @@ const matchesCategory =
                   setShowLogin(false);
                   setPassword("");
                 }}
-                className="flex-1 rounded-xl border border-[#d9e9de] px-4 py-3 text-sm font-medium text-[#5b9877] transition hover:bg-[#edf6f0]"
+                className="flex-1 rounded-xl border border-[#dce8c6] px-4 py-3 text-sm font-medium text-[#8caf59] transition hover:bg-[#f7f9f0]"
               >
                 취소
               </button>
@@ -1884,7 +1884,7 @@ const matchesCategory =
                 onClick={
                   handleAdminLogin
                 }
-                className="flex-1 rounded-xl bg-[#5b9877] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#3e7558]"
+                className="flex-1 rounded-xl bg-[#8caf59] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#739b45]"
               >
                 로그인
               </button>
@@ -1901,7 +1901,7 @@ const matchesCategory =
               노래 수정
             </h2>
 
-            <p className="mt-1 text-sm text-[#718f7e]">
+            <p className="mt-1 text-sm text-[#82936e]">
               노래 정보를 수정해주세요.
             </p>
 
@@ -1917,7 +1917,7 @@ const matchesCategory =
                     e.target.value
                   )
                 }
-                className="w-full rounded-xl border border-[#d9e9de] bg-[#f3faf5] px-4 py-3 text-sm outline-none focus:border-[#5b9877]"
+                className="w-full rounded-xl border border-[#dce8c6] bg-[#f7f9f0] px-4 py-3 text-sm outline-none focus:border-[#8caf59]"
               />
             </div>
 
@@ -1933,7 +1933,7 @@ const matchesCategory =
                     e.target.value
                   )
                 }
-                className="w-full rounded-xl border border-[#d9e9de] bg-[#f3faf5] px-4 py-3 text-sm outline-none focus:border-[#5b9877]"
+                className="w-full rounded-xl border border-[#dce8c6] bg-[#f7f9f0] px-4 py-3 text-sm outline-none focus:border-[#8caf59]"
               />
             </div>
 
@@ -1941,7 +1941,7 @@ const matchesCategory =
               <label className="mb-2 block text-sm font-semibold">
                 카테고리
               </label>
-              <p className="mb-3 text-xs text-[#718f7e]">
+              <p className="mb-3 text-xs text-[#82936e]">
                 여러 개를 선택할 수 있습니다.
               </p>
               <div className="flex flex-wrap gap-2">
@@ -1955,8 +1955,8 @@ const matchesCategory =
                       onClick={() => toggleEditCategory(category)}
                       className={
                         selected
-                          ? "rounded-full border border-[#5b9877] bg-[#5b9877] px-3 py-2 text-sm text-white"
-                          : "rounded-full border border-[#d9e9de] bg-white px-3 py-2 text-sm text-[#496d56] hover:bg-[#f3faf5]"
+                          ? "rounded-full border border-[#8caf59] bg-[#8caf59] px-3 py-2 text-sm text-white"
+                          : "rounded-full border border-[#dce8c6] bg-white px-3 py-2 text-sm text-[#416b36] hover:bg-[#f7f9f0]"
                       }
                     >
                       {selected && "✓ "}
@@ -1966,7 +1966,7 @@ const matchesCategory =
                 })}
               </div>
               {editCategory.length > 0 && (
-                <p className="mt-2 text-xs text-[#718f7e]">
+                <p className="mt-2 text-xs text-[#82936e]">
                   선택됨: {editCategory.join(", ")}
                 </p>
               )}
@@ -1987,8 +1987,8 @@ const matchesCategory =
                   }
                   className={
                     editDifficulty === null
-                      ? "flex-1 rounded-xl border border-[#5b9877] bg-[#5b9877] py-2 text-sm text-white"
-                      : "flex-1 rounded-xl border border-[#d9e9de] py-2 text-sm text-[#718f7e]"
+                      ? "flex-1 rounded-xl border border-[#8caf59] bg-[#8caf59] py-2 text-sm text-white"
+                      : "flex-1 rounded-xl border border-[#dce8c6] py-2 text-sm text-[#82936e]"
                   }
                 >
                   선택 안 함
@@ -2007,8 +2007,8 @@ const matchesCategory =
                       className={
                         editDifficulty ===
                         star
-                          ? "flex-1 rounded-xl border border-[#5b9877] bg-[#5b9877] py-2 text-sm text-white"
-                          : "flex-1 rounded-xl border border-[#d9e9de] bg-white py-2 text-sm"
+                          ? "flex-1 rounded-xl border border-[#8caf59] bg-[#8caf59] py-2 text-sm text-white"
+                          : "flex-1 rounded-xl border border-[#dce8c6] bg-white py-2 text-sm"
                       }
                     >
                       {"⭐".repeat(
@@ -2024,7 +2024,7 @@ const matchesCategory =
               <button
                 onClick={closeEdit}
                 disabled={savingEdit}
-                className="flex-1 rounded-xl border border-[#d9e9de] px-4 py-3 text-sm font-medium text-[#5b9877] transition hover:bg-[#edf6f0] disabled:opacity-50"
+                className="flex-1 rounded-xl border border-[#dce8c6] px-4 py-3 text-sm font-medium text-[#8caf59] transition hover:bg-[#f7f9f0] disabled:opacity-50"
               >
                 취소
               </button>
@@ -2032,7 +2032,7 @@ const matchesCategory =
               <button
                 onClick={handleEdit}
                 disabled={savingEdit}
-                className="flex-1 rounded-xl bg-[#5b9877] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#3e7558] disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex-1 rounded-xl bg-[#8caf59] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#739b45] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {savingEdit
                   ? "저장 중..."
@@ -2044,9 +2044,11 @@ const matchesCategory =
       )}
 
       {/* 본문 */}
-      <section className="mx-auto max-w-6xl px-6 py-10">
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:py-10">
+        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[260px_minmax(0,1fr)] xl:gap-8">
+        <aside className="min-w-0 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:pr-1">
         {/* 검색 */}
-        <div className="mb-5">
+        <div className="mb-4">
           <input
             type="text"
             value={search}
@@ -2054,20 +2056,20 @@ const matchesCategory =
               setSearch(e.target.value)
             }
             placeholder="노래 제목이나 아티스트 검색..."
-            className="w-full rounded-2xl border border-[#d9e9de] bg-white px-5 py-4 text-sm outline-none transition placeholder:text-[#9ab7a5] focus:border-[#5b9877] focus:ring-2 focus:ring-[#5b9877]/10"
+            className="w-full rounded-2xl border border-[#dce8c6] bg-white/90 px-4 py-3.5 text-sm outline-none shadow-sm transition placeholder:text-[#a0ad91] focus:border-[#8caf59] focus:ring-2 focus:ring-[#8caf59]/10"
           />
         </div>
 
         {/* 필터 */}
-        <div className="mb-8 rounded-2xl border border-[#d9e9de] bg-white p-5">
+        <div className="rounded-[1.5rem] border border-[#dce8c6] bg-white/85 p-4 shadow-sm sm:p-5">
           <div>
             <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-              <p className="text-sm font-semibold">카테고리</p>
+              <p className="text-xs font-black tracking-wide text-[#416b36]">카테고리</p>
               {isAdmin && (
                 <button
                   type="button"
                   onClick={() => setShowCategoryManager((current) => !current)}
-                  className="rounded-lg border border-[#d9e9de] bg-[#f3faf5] px-3 py-1.5 text-xs font-medium text-[#5b9877] hover:bg-[#e8f4ec]"
+                  className="rounded-lg border border-[#dce8c6] bg-[#f7f9f0] px-3 py-1.5 text-xs font-medium text-[#8caf59] hover:bg-[#edf5df]"
                 >
                   ⚙️ 카테고리 관리 {showCategoryManager ? "닫기" : ""}
                 </button>
@@ -2075,8 +2077,8 @@ const matchesCategory =
             </div>
 
             {showCategoryManager && isAdmin && (
-              <div className="mb-4 rounded-xl border border-[#d9e9de] bg-[#f7fbf8] p-4">
-                <p className="mb-3 text-sm font-semibold text-[#496d56]">카테고리 관리</p>
+              <div className="mb-4 rounded-xl border border-[#dce8c6] bg-[#f7fbf8] p-4">
+                <p className="mb-3 text-sm font-semibold text-[#416b36]">카테고리 관리</p>
 
                 <div className="mb-4 flex gap-2">
                   <input
@@ -2089,13 +2091,13 @@ const matchesCategory =
                       }
                     }}
                     placeholder="새 카테고리 이름"
-                    className="min-w-0 flex-1 rounded-lg border border-[#d9e9de] bg-white px-3 py-2 text-sm outline-none focus:border-[#5b9877]"
+                    className="min-w-0 flex-1 rounded-lg border border-[#dce8c6] bg-white px-3 py-2 text-sm outline-none focus:border-[#8caf59]"
                   />
                   <button
                     type="button"
                     onClick={() => void handleAddCategory()}
                     disabled={savingCategory || !newCategoryName.trim()}
-                    className="shrink-0 rounded-lg bg-[#5b9877] px-4 py-2 text-sm font-medium text-white hover:bg-[#3e7558] disabled:opacity-50"
+                    className="shrink-0 rounded-lg bg-[#8caf59] px-2.5 py-1.5 text-xs font-medium text-white hover:bg-[#739b45] disabled:opacity-50"
                   >
                     추가
                   </button>
@@ -2105,7 +2107,7 @@ const matchesCategory =
   {categoryList.map((category, index) => (
     <div
       key={category.id}
-      className="flex flex-wrap items-center gap-2 rounded-lg border border-[#e3efe7] bg-white p-2"
+      className="flex flex-wrap items-center gap-2 rounded-lg border border-[#e4efd5] bg-white p-2"
     >
       {editingCategoryName === category.name ? (
         <>
@@ -2123,14 +2125,14 @@ const matchesCategory =
                 setCategoryEditValue("");
               }
             }}
-            className="min-w-0 flex-1 rounded-lg border border-[#d9e9de] px-3 py-2 text-sm outline-none focus:border-[#5b9877]"
+            className="min-w-0 flex-1 rounded-lg border border-[#dce8c6] px-3 py-2 text-sm outline-none focus:border-[#8caf59]"
           />
 
           <button
             type="button"
             onClick={() => void handleRenameCategory(category.name)}
             disabled={savingCategory}
-            className="rounded-lg bg-[#5b9877] px-3 py-2 text-xs font-medium text-white disabled:opacity-50"
+            className="rounded-lg bg-[#8caf59] px-3 py-2 text-xs font-medium text-white disabled:opacity-50"
           >
             저장
           </button>
@@ -2141,14 +2143,14 @@ const matchesCategory =
               setEditingCategoryName(null);
               setCategoryEditValue("");
             }}
-            className="rounded-lg border border-[#d9e9de] px-3 py-2 text-xs text-[#718f7e]"
+            className="rounded-lg border border-[#dce8c6] px-3 py-2 text-xs text-[#82936e]"
           >
             취소
           </button>
         </>
       ) : (
         <>
-          <span className="min-w-0 flex-1 px-2 text-sm font-medium text-[#496d56]">
+          <span className="min-w-0 flex-1 px-2 text-sm font-medium text-[#416b36]">
             {category.name}
           </span>
 
@@ -2159,7 +2161,7 @@ const matchesCategory =
               void handleMoveCategory(category.id, "up")
             }
             disabled={savingCategory || index === 0}
-            className="rounded-lg border border-[#d9e9de] px-3 py-2 text-sm text-[#5b9877] hover:bg-[#f3faf5] disabled:cursor-not-allowed disabled:opacity-30"
+            className="rounded-lg border border-[#dce8c6] px-3 py-2 text-sm text-[#8caf59] hover:bg-[#f7f9f0] disabled:cursor-not-allowed disabled:opacity-30"
             title="위로 이동"
           >
             ▲
@@ -2174,7 +2176,7 @@ const matchesCategory =
             disabled={
               savingCategory || index === categoryList.length - 1
             }
-            className="rounded-lg border border-[#d9e9de] px-3 py-2 text-sm text-[#5b9877] hover:bg-[#f3faf5] disabled:cursor-not-allowed disabled:opacity-30"
+            className="rounded-lg border border-[#dce8c6] px-3 py-2 text-sm text-[#8caf59] hover:bg-[#f7f9f0] disabled:cursor-not-allowed disabled:opacity-30"
             title="아래로 이동"
           >
             ▼
@@ -2187,7 +2189,7 @@ const matchesCategory =
               setCategoryEditValue(category.name);
             }}
             disabled={savingCategory}
-            className="rounded-lg border border-[#d9e9de] px-3 py-2 text-xs text-[#5b9877] hover:bg-[#f3faf5] disabled:opacity-50"
+            className="rounded-lg border border-[#dce8c6] px-3 py-2 text-xs text-[#8caf59] hover:bg-[#f7f9f0] disabled:opacity-50"
           >
             이름 변경
           </button>
@@ -2206,7 +2208,7 @@ const matchesCategory =
   ))}
 </div>
 
-                <p className="mt-3 text-xs leading-relaxed text-[#8ba997]">
+                <p className="mt-3 text-xs leading-relaxed text-[#82936e]">
                   이름을 변경하면 기존 노래에도 반영됩니다. 삭제하면 기존 노래에서 해당 카테고리만 제거되고 노래는 유지됩니다.
                 </p>
               </div>
@@ -2217,8 +2219,8 @@ const matchesCategory =
                 onClick={() => setCategoryFilter([])}
                 className={
                   categoryFilter.length === 0
-                    ? "rounded-full bg-[#5b9877] px-4 py-2 text-sm text-white"
-                    : "rounded-full border border-[#d9e9de] bg-white px-4 py-2 text-sm text-[#496d56] hover:bg-[#f3faf5]"
+                    ? "rounded-full bg-[#8caf59] px-2.5 py-1.5 text-xs text-white"
+                    : "rounded-full border border-[#dce8c6] bg-white px-2.5 py-1.5 text-xs text-[#416b36] hover:bg-[#f7f9f0]"
                 }
               >전체</button>
               {categoryList.map((categoryItem) => {
@@ -2232,8 +2234,8 @@ const matchesCategory =
                     )}
                     className={
                       selected
-                        ? "rounded-full bg-[#5b9877] px-4 py-2 text-sm text-white"
-                        : "rounded-full border border-[#d9e9de] bg-white px-4 py-2 text-sm text-[#496d56] hover:bg-[#f3faf5]"
+                        ? "rounded-full bg-[#8caf59] px-2.5 py-1.5 text-xs text-white"
+                        : "rounded-full border border-[#dce8c6] bg-white px-2.5 py-1.5 text-xs text-[#416b36] hover:bg-[#f7f9f0]"
                     }
                   >
   {selected && "✓ "}
@@ -2243,19 +2245,19 @@ const matchesCategory =
               })}
             </div>
             {categoryFilter.length > 0 && (
-              <p className="mt-2 text-xs text-[#718f7e]">
+              <p className="mt-2 text-xs text-[#82936e]">
                 선택한 카테고리를 모두 포함하는 노래를 표시합니다.
               </p>
             )}
           </div>
 
           <div className="mt-5">
-            <p className="mb-2 text-sm font-semibold">
+            <p className="mb-2 text-xs font-black tracking-wide text-[#416b36]">
               가수
             </p>
 
             {allArtists.length === 0 ? (
-              <p className="text-sm text-[#9ab7a5]">
+              <p className="text-sm text-[#a0ad91]">
                 등록된 가수가 없습니다.
               </p>
             ) : (
@@ -2266,8 +2268,8 @@ const matchesCategory =
                     onClick={() => setArtistFilter(new Set())}
                     className={
                       artistFilter.size === 0
-                        ? "rounded-full bg-[#5b9877] px-4 py-2 text-sm text-white"
-                        : "rounded-full border border-[#d9e9de] bg-white px-4 py-2 text-sm text-[#496d56] hover:bg-[#f3faf5]"
+                        ? "rounded-full bg-[#8caf59] px-2.5 py-1.5 text-xs text-white"
+                        : "rounded-full border border-[#dce8c6] bg-white px-2.5 py-1.5 text-xs text-[#416b36] hover:bg-[#f7f9f0]"
                     }
                   >
                     전체
@@ -2292,13 +2294,13 @@ const matchesCategory =
                         }
                         className={
                           selected
-                            ? "rounded-full bg-[#5b9877] px-4 py-2 text-sm text-white"
-                            : "rounded-full border border-[#d9e9de] bg-white px-4 py-2 text-sm text-[#496d56] hover:bg-[#f3faf5]"
+                            ? "rounded-full bg-[#8caf59] px-2.5 py-1.5 text-xs text-white"
+                            : "rounded-full border border-[#dce8c6] bg-white px-2.5 py-1.5 text-xs text-[#416b36] hover:bg-[#f7f9f0]"
                         }
                       >
                         {selected && "✓ "}
                         {artist}
-                        <span className={selected ? "ml-1 text-white/80" : "ml-1 text-[#8ba997]"}>
+                        <span className={selected ? "ml-1 text-white/80" : "ml-1 text-[#82936e]"}>
                           {artistSongCounts.get(artist) ?? 0}
                         </span>
                       </button>
@@ -2309,7 +2311,7 @@ const matchesCategory =
                     <button
                       type="button"
                       onClick={() => setShowAllArtists((current) => !current)}
-                      className="rounded-full border border-dashed border-[#a9c9b4] bg-[#f3faf5] px-4 py-2 text-sm font-medium text-[#5b9877] transition hover:bg-[#e8f4ec]"
+                      className="rounded-full border border-dashed border-[#a9c9b4] bg-[#f7f9f0] px-2.5 py-1.5 text-xs font-medium text-[#8caf59] transition hover:bg-[#edf5df]"
                     >
                       {showAllArtists
                         ? "접기"
@@ -2318,7 +2320,7 @@ const matchesCategory =
                   )}
                 </div>
                 {artistFilter.size > 0 && (
-                  <p className="mt-2 text-xs text-[#718f7e]">
+                  <p className="mt-2 text-xs text-[#82936e]">
                     {Array.from(artistFilter).join(", ")}의 노래를 표시하고 있습니다. 여러 가수를 선택하면 선택한 가수들의 노래가 모두 표시됩니다.
                   </p>
                 )}
@@ -2327,7 +2329,7 @@ const matchesCategory =
           </div>
 
           <div className="mt-5">
-            <p className="mb-2 text-sm font-semibold">
+            <p className="mb-2 text-xs font-black tracking-wide text-[#416b36]">
               난이도
             </p>
 
@@ -2341,8 +2343,8 @@ const matchesCategory =
                 className={
                   difficultyFilter ===
                   null
-                    ? "rounded-full bg-[#5b9877] px-4 py-2 text-sm text-white"
-                    : "rounded-full border border-[#d9e9de] bg-white px-4 py-2 text-sm text-[#496d56] hover:bg-[#f3faf5]"
+                    ? "rounded-full bg-[#8caf59] px-2.5 py-1.5 text-xs text-white"
+                    : "rounded-full border border-[#dce8c6] bg-white px-2.5 py-1.5 text-xs text-[#416b36] hover:bg-[#f7f9f0]"
                 }
               >
                 전체
@@ -2360,8 +2362,8 @@ const matchesCategory =
                     className={
                       difficultyFilter ===
                       difficulty
-                        ? "rounded-full bg-[#5b9877] px-4 py-2 text-sm text-white"
-                        : "rounded-full border border-[#d9e9de] bg-white px-4 py-2 text-sm text-[#496d56] hover:bg-[#f3faf5]"
+                        ? "rounded-full bg-[#8caf59] px-2.5 py-1.5 text-xs text-white"
+                        : "rounded-full border border-[#dce8c6] bg-white px-2.5 py-1.5 text-xs text-[#416b36] hover:bg-[#f7f9f0]"
                     }
                   >
                     {"⭐".repeat(
@@ -2373,7 +2375,9 @@ const matchesCategory =
             </div>
           </div>
         </div>
+        </aside>
 
+        <div className="min-w-0">
 {/* 공용 Queue */}
 <QueuePanel songs={songs} isAdmin={isAdmin} />
 
@@ -2385,13 +2389,13 @@ const matchesCategory =
             </h2>
 
             <div className="mt-2 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#e3efe7] px-3 py-1.5 text-sm font-medium text-[#5b9877]">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#e4efd5] px-3 py-1.5 text-sm font-medium text-[#8caf59]">
                 🎵 전체 {songs.length}곡
               </span>
 
               {filteredSongs.length !==
                 songs.length && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-[#d9e9de] bg-white px-3 py-1.5 text-sm text-[#718f7e]">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[#dce8c6] bg-white px-3 py-1.5 text-sm text-[#82936e]">
                   현재{" "}
                   {
                     filteredSongs.length
@@ -2415,7 +2419,7 @@ const matchesCategory =
                     | "popular"
                 )
               }
-              className="rounded-xl border border-[#d9e9de] bg-white px-4 py-2.5 text-sm font-medium text-[#5b9877] outline-none transition hover:bg-[#e8f4ec] focus:border-[#5b9877]"
+              className="rounded-xl border border-[#dce8c6] bg-white px-4 py-2.5 text-sm font-medium text-[#8caf59] outline-none transition hover:bg-[#edf5df] focus:border-[#8caf59]"
             >
               <option value="latest">
                 🆕 최신순
@@ -2435,15 +2439,15 @@ const matchesCategory =
             </select>
 
             {/* 보기 전환 */}
-            <div className="flex rounded-xl border border-[#d9e9de] bg-white p-1">
+            <div className="flex rounded-xl border border-[#dce8c6] bg-white p-1">
               <button
                 onClick={() =>
                   setViewMode("grid")
                 }
                 className={
                   viewMode === "grid"
-                    ? "rounded-lg bg-[#5b9877] px-3 py-2 text-sm font-medium text-white shadow-sm"
-                    : "rounded-lg px-3 py-2 text-sm text-[#5b9877] transition hover:bg-[#e8f4ec]"
+                    ? "rounded-lg bg-[#8caf59] px-3 py-2 text-sm font-medium text-white shadow-sm"
+                    : "rounded-lg px-3 py-2 text-sm text-[#8caf59] transition hover:bg-[#edf5df]"
                 }
               >
                 ▦ 블럭
@@ -2455,8 +2459,8 @@ const matchesCategory =
                 }
                 className={
                   viewMode === "list"
-                    ? "rounded-lg bg-[#5b9877] px-3 py-2 text-sm font-medium text-white shadow-sm"
-                    : "rounded-lg px-3 py-2 text-sm text-[#5b9877] transition hover:bg-[#e8f4ec]"
+                    ? "rounded-lg bg-[#8caf59] px-3 py-2 text-sm font-medium text-white shadow-sm"
+                    : "rounded-lg px-3 py-2 text-sm text-[#8caf59] transition hover:bg-[#edf5df]"
                 }
               >
                 ☰ 리스트
@@ -2467,10 +2471,10 @@ const matchesCategory =
 
         {/* 커버 검색 진행 표시 */}
         {updatingCovers && (
-          <div className="mb-5 rounded-2xl border border-[#d9e9de] bg-white p-4 shadow-sm">
+          <div className="mb-5 rounded-2xl border border-[#dce8c6] bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-semibold text-[#496d56]">
+                <p className="text-sm font-semibold text-[#416b36]">
                   🖼️ 앨범 커버를 찾고 있어요
                 </p>
 
@@ -2480,7 +2484,7 @@ const matchesCategory =
                 </p>
               </div>
 
-              <span className="text-sm font-bold text-[#5b9877]">
+              <span className="text-sm font-bold text-[#8caf59]">
                 {
                   coverProgress.processed
                 }
@@ -2491,9 +2495,9 @@ const matchesCategory =
               </span>
             </div>
 
-            <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#e3efe7]">
+            <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#e4efd5]">
               <div
-                className="h-full rounded-full bg-[#5b9877] transition-all duration-300"
+                className="h-full rounded-full bg-[#8caf59] transition-all duration-300"
                 style={{
                   width:
                     coverProgress.total >
@@ -2518,7 +2522,7 @@ const matchesCategory =
         <div
           className={
             viewMode === "grid"
-              ? "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+              ? "grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
               : "grid gap-4"
           }
         >
@@ -2543,14 +2547,14 @@ const matchesCategory =
                   key={song.id}
                   className={
                     viewMode === "grid"
-                      ? "group relative flex min-h-[360px] w-full flex-col overflow-hidden rounded-2xl border border-[#d9e9de] bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-[#c2d9c9] hover:shadow-md"
-                      : "group relative flex w-full items-center justify-between overflow-hidden rounded-2xl border border-[#d9e9de] bg-white p-4 pr-20 shadow-sm transition hover:-translate-y-0.5 hover:border-[#c2d9c9] hover:shadow-md"
+                      ? "group relative flex min-h-[360px] w-full flex-col overflow-hidden rounded-2xl border border-[#dce8c6] bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-[#dce8c6] hover:shadow-md"
+                      : "group relative flex w-full items-center justify-between overflow-hidden rounded-2xl border border-[#dce8c6] bg-white p-4 pr-20 shadow-sm transition hover:-translate-y-0.5 hover:border-[#dce8c6] hover:shadow-md"
                   }
                 >
                   {/* 블럭형 커버 */}
                   {viewMode ===
                     "grid" && (
-                    <div className="relative aspect-square w-full overflow-hidden bg-[#edf6f0]">
+                    <div className="relative aspect-square w-full overflow-hidden bg-[#f7f9f0]">
                       <button
                         type="button"
                         onClick={(e) => {
@@ -2558,7 +2562,7 @@ const matchesCategory =
                           void handleSongQueueAction(song);
                         }}
                         disabled={!!processingSongIds[song.id] || (!isAdmin && (!userId || !!requestedSongIds[song.id]))}
-                        className="absolute left-2 top-2 z-20 rounded-lg border border-white/70 bg-white/95 px-3 py-2 text-xs font-bold text-[#5b9877] shadow-md transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-70"
+                        className="absolute left-2 top-2 z-20 rounded-lg border border-white/70 bg-white/95 px-3 py-2 text-xs font-bold text-[#8caf59] shadow-md transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-70"
                       >
                         {processingSongIds[song.id]
                           ? "처리 중..."
@@ -2583,11 +2587,11 @@ const matchesCategory =
                       ) : (
                         <div className="flex h-full w-full items-center justify-center">
                           <div className="text-center">
-                            <div className="text-5xl text-[#c2d9c9]">
+                            <div className="text-5xl text-[#dce8c6]">
                               ♪
                             </div>
 
-                            <p className="mt-2 text-xs text-[#9ab7a5]">
+                            <p className="mt-2 text-xs text-[#a0ad91]">
                               커버 없음
                             </p>
                           </div>
@@ -2599,7 +2603,7 @@ const matchesCategory =
                   {/* 리스트형 커버 */}
                   {viewMode ===
                     "list" && (
-                    <div className="relative mr-4 h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-[#edf6f0]">
+                    <div className="relative mr-4 h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-[#f7f9f0]">
                       <button
                         type="button"
                         onClick={(e) => {
@@ -2608,7 +2612,7 @@ const matchesCategory =
                         }}
                         disabled={!!processingSongIds[song.id] || (!isAdmin && (!userId || !!requestedSongIds[song.id]))}
                         aria-label={isAdmin ? `${song.title} Queue 추가` : `${song.title} 요청`}
-                        className="absolute inset-x-0 top-0 z-20 bg-white/95 px-1 py-1.5 text-[10px] font-bold leading-tight text-[#5b9877] shadow-sm disabled:opacity-70"
+                        className="absolute inset-x-0 top-0 z-20 bg-white/95 px-1 py-1.5 text-[10px] font-bold leading-tight text-[#8caf59] shadow-sm disabled:opacity-70"
                       >
                         {processingSongIds[song.id]
                           ? "처리 중"
@@ -2632,7 +2636,7 @@ const matchesCategory =
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center">
-                          <span className="text-2xl text-[#c2d9c9]">
+                          <span className="text-2xl text-[#dce8c6]">
                             ♪
                           </span>
                         </div>
@@ -2653,7 +2657,7 @@ const matchesCategory =
                       {song.title}
                     </h3>
 
-                    <p className="whitespace-normal break-words leading-snug text-[#718f7e]">
+                    <p className="whitespace-normal break-words leading-snug text-[#82936e]">
                       {song.artist}
                     </p>
 
@@ -2661,14 +2665,14 @@ const matchesCategory =
                       {parseCategories(song.category).map((category) => (
                         <span
                           key={category}
-                          className="rounded-full bg-[#e3efe7] px-2.5 py-1 text-xs text-[#5b9877]"
+                          className="rounded-full bg-[#e4efd5] px-2.5 py-1 text-xs text-[#8caf59]"
                         >
                           {category}
                         </span>
                       ))}
 
                       {song.difficulty && (
-                        <span className="rounded-full bg-[#edf6f0] px-2.5 py-1 text-xs text-[#5b9877]">
+                        <span className="rounded-full bg-[#f7f9f0] px-2.5 py-1 text-xs text-[#8caf59]">
                           {"⭐".repeat(
                             song.difficulty
                           )}
@@ -2689,7 +2693,7 @@ const matchesCategory =
       onClick={() =>
         openEdit(song)
       }
-      className="rounded-lg border border-[#d9e9de] px-3 py-1.5 text-xs font-medium text-[#5b9877] transition hover:bg-[#edf6f0]"
+      className="rounded-lg border border-[#dce8c6] px-3 py-1.5 text-xs font-medium text-[#8caf59] transition hover:bg-[#f7f9f0]"
     >
       ✏️ 수정
     </button>
@@ -2703,7 +2707,7 @@ const matchesCategory =
             song.title
           )
         }
-        className="rounded-lg border border-[#d9e9de] px-3 py-1.5 text-xs font-medium text-[#718f7e] transition hover:bg-[#edf6f0]"
+        className="rounded-lg border border-[#dce8c6] px-3 py-1.5 text-xs font-medium text-[#82936e] transition hover:bg-[#f7f9f0]"
       >
         🖼️ 커버 삭제
       </button>
@@ -2716,7 +2720,7 @@ const matchesCategory =
           song.title
         )
       }
-      className="rounded-lg border border-[#d9e9de] px-3 py-1.5 text-xs font-medium text-[#7965b4] transition hover:bg-[#f0ebfb]"
+      className="rounded-lg border border-[#dce8c6] px-3 py-1.5 text-xs font-medium text-[#7965b4] transition hover:bg-[#f0ebfb]"
     >
       삭제
     </button>
@@ -2734,11 +2738,11 @@ const matchesCategory =
       ? "absolute bottom-11 right-2 flex flex-col items-center justify-center rounded-2xl px-3 py-2 transition " +
         (isLiked
           ? "bg-[#f6f2ff]"
-          : "bg-transparent hover:bg-[#f3faf5]")
+          : "bg-transparent hover:bg-[#f7f9f0]")
       : "absolute right-4 top-1/2 flex -translate-y-1/2 flex-col items-center justify-center rounded-2xl px-3 py-2 transition " +
         (isLiked
           ? "bg-[#f6f2ff]"
-          : "bg-transparent hover:bg-[#f3faf5]")
+          : "bg-transparent hover:bg-[#f7f9f0]")
   }
   aria-label={
     isLiked
@@ -2766,7 +2770,7 @@ const matchesCategory =
       stroke={
         isLiked
           ? "#9b85d2"
-          : "#9ab7a5"
+          : "#a0ad91"
       }
       strokeWidth="1.8"
       strokeLinecap="round"
@@ -2781,7 +2785,7 @@ const matchesCategory =
       "mt-0.5 text-xs font-semibold " +
       (isLiked
         ? "text-[#9b85d2]"
-        : "text-[#9ab7a5]")
+        : "text-[#a0ad91]")
     }
   >
     {likes}
@@ -2805,15 +2809,17 @@ const matchesCategory =
               검색 결과가 없어요
             </p>
 
-            <p className="mt-1 text-sm text-[#718f7e]">
+            <p className="mt-1 text-sm text-[#82936e]">
               다른 제목이나 아티스트를
               검색해보세요.
             </p>
           </div>
         )}
+        </div>
+        </div>
       </section>
 
-      <footer className="mx-auto max-w-6xl px-6 py-10 text-center text-xs text-[#9ab7a5]">
+      <footer className="mx-auto max-w-7xl px-6 py-10 text-center text-xs text-[#a0ad91]">
         SANGCHU SONGBOOK
       </footer>
     </main>

@@ -299,12 +299,86 @@ export default function Home() {
               SOOP에서 다양한 방송과 컨텐츠로 모종이들과 함께하고 있습니다.
             </p>
 
-            <div className="mt-6 inline-flex w-fit items-center gap-3 rounded-full border border-[#dce6bd] bg-white/70 px-4 py-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#a8cb68]" />
-              <span className="text-sm font-bold text-[#648047]">
-                IRIS 크루 소속
-              </span>
-            </div>
+           
+
+<div className="mt-6 flex flex-wrap items-center gap-3">
+  {/* 크루 소속 */}
+  <div className="inline-flex items-center gap-3 rounded-full border border-[#dce6bd] bg-white/70 px-4 py-2">
+    <span className="h-2.5 w-2.5 rounded-full bg-[#a8cb68]" />
+    <span className="text-sm font-bold text-[#648047]">
+      IRIS 크루 소속
+    </span>
+  </div>
+
+  {/* 외부 링크 */}
+  <div className="flex flex-wrap items-center gap-2">
+
+    {/* SOOP */}
+    <a
+      href="https://www.sooplive.co.kr/station/hiyam2411"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="유상츄 SOOP 방송국"
+      className="inline-flex h-10 items-center gap-2 rounded-xl border border-[#dce6bd] bg-white/80 px-3 transition hover:-translate-y-1 hover:shadow-md"
+    >
+      <Image src="/icons/soop.png" alt="SOOP" width={25} height={25} className="object-contain" />
+      <span className="text-xs font-bold text-[#496b3b]">SOOP</span>
+    </a>
+
+    {/* 네이버 카페 */}
+    <a
+      href="https://cafe.naver.com/iris2514"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="IRIS 네이버 카페"
+      className="inline-flex h-10 items-center gap-2 rounded-xl border border-[#dce6bd] bg-white/80 px-3 transition hover:-translate-y-1 hover:shadow-md"
+    >
+      <Image src="/icons/naver-cafe.png" alt="네이버 카페" width={25} height={25} className="object-contain" />
+      <span className="text-xs font-bold text-[#496b3b]">카페</span>
+    </a>
+
+    {/* 유튜브 링크 공통 */}
+    {[
+      {
+        label: "쇼츠",
+        title: "IRIS 쇼츠",
+        url: "https://www.youtube.com/@우당탕탕이리스",
+      },
+      {
+        label: "커버",
+        title: "IRIS 커버곡",
+        url: "https://www.youtube.com/@IRISLove1004",
+      },
+      {
+        label: "개인",
+        title: "유상츄 개인 유튜브",
+        url: "https://www.youtube.com/@%EC%9C%A0%EC%83%81%EC%B8%84-u",
+      },
+    ].map((item) => (
+      <a
+        key={item.label}
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={item.title}
+        className="inline-flex h-10 items-center gap-2 rounded-xl border border-[#dce6bd] bg-white/80 px-3 transition hover:-translate-y-1 hover:bg-[#fff0ed] hover:shadow-md"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className="h-5 w-5 shrink-0 fill-[#FF0033]"
+          aria-hidden="true"
+        >
+          <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z" />
+        </svg>
+        <span className="text-xs font-bold text-[#496b3b]">
+          {item.label}
+        </span>
+      </a>
+    ))}
+  </div>
+</div>
+
+
 
             <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {profileInfo.map((item) => (
