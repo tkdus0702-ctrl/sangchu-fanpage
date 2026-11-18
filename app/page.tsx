@@ -331,9 +331,10 @@ export default function Home() {
       	<section id="tmi" className="scroll-mt-24 border-y border-[#e3e9d0] bg-white/50">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <SectionHeading
-            title="특징 & TMI"
-            description="모종이들이 알아두면 재미있는 유상츄의 이야기."
-          />
+  eyebrow="ABOUT SANGCHU"
+  title="특징 & TMI"
+  description="모종이들이 알아두면 재미있는 유상츄의 이야기."
+/>
 
           <div className="grid gap-4 md:grid-cols-2">
             {tmiItems.map((item, index) => (
