@@ -11,10 +11,18 @@ const SOOP_ID = "hiyam2411";
 const SOOP_API =
   `https://api-channel.sooplive.com/v1.1/channel/${SOOP_ID}/home/section/broad`;
 
-export async function POST() {
-  if (!(await isAdmin())) {
+export async function POST(request: Request) {
+  // GitHub Actions용 CRON_SECRET 인증
+  const cronSecret = process.env.CRON_SECRET;
+  const authHeader = request.headers.get("authorization");
+
+  const cronAuthorized =
+    !!cronSecret && authHeader === `Bearer ${cronSecret}`;
+
+  // GitHub 인증이 아니면 기존 관리자 로그인 확인
+  if (!cronAuthorized && !(await isAdmin())) {
     return NextResponse.json(
-      { error: "관리자 로그인이 필요합니다." },
+      { error: "인증이 필요합니다." },
       { status: 401 }
     );
   }
@@ -126,11 +134,7 @@ export async function POST() {
       );
     }
 
-    if (
-      !live ||
-      !live.broadNo ||
-      !live.broadStart
-    ) {
+    if (!live || !live.broadNo || !live.broadStart) {
       console.error("Invalid SOOP broadcast data:", live);
 
       return NextResponse.json(

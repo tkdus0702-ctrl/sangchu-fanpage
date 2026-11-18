@@ -1,0 +1,17 @@
+
+name: SOOP Broadcast Check
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  check-broadcast:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check SOOP broadcast status
+        run: |
+          curl -fsS -X POST "${{ vars.SITE_URL }}/api/schedule/live-status" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
