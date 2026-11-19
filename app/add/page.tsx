@@ -16,6 +16,8 @@ export default function AddSongPage() {
 
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
+const [instUrl, setInstUrl] = useState("");
+const [lyrics, setLyrics] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
   const [categoryList, setCategoryList] = useState<Category[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
@@ -78,6 +80,8 @@ export default function AddSongPage() {
           artist: artist.trim(),
           category: categories.join(","),
           difficulty,
+inst_url: instUrl.trim(),
+lyrics: lyrics,
         }),
       });
 
@@ -147,7 +151,37 @@ export default function AddSongPage() {
                 className="w-full rounded-xl border border-[#eadfd5] px-4 py-3 outline-none focus:border-[#8b6f5c] focus:ring-2 focus:ring-[#8b6f5c]/10"
               />
             </div>
+	<div>
+  <label className="mb-2 block text-sm font-semibold">
+    INST / MR 영상 링크
+  </label>
+  <input
+    type="url"
+    value={instUrl}
+    onChange={(e) => setInstUrl(e.target.value)}
+    placeholder="https://www.youtube.com/watch?v=..."
+    className="w-full rounded-xl border border-[#eadfd5] px-4 py-3 outline-none focus:border-[#8b6f5c] focus:ring-2 focus:ring-[#8b6f5c]/10"
+  />
+  <p className="mt-2 text-xs text-[#9a887b]">
+    유튜브 등 INST 또는 MR 영상 주소를 입력해주세요. 비워두면 버튼이 표시되지 않습니다.
+  </p>
+</div>
 
+<div>
+  <label className="mb-2 block text-sm font-semibold">
+    노래 가사
+  </label>
+  <textarea
+    value={lyrics}
+    onChange={(e) => setLyrics(e.target.value)}
+    placeholder={"여기에 가사를 입력해주세요.\n줄바꿈도 그대로 저장됩니다."}
+    rows={8}
+    className="w-full resize-y rounded-xl border border-[#eadfd5] px-4 py-3 text-sm leading-7 outline-none focus:border-[#8b6f5c] focus:ring-2 focus:ring-[#8b6f5c]/10"
+  />
+  <p className="mt-2 text-xs text-[#9a887b]">
+    가사를 입력하지 않으면 방문자에게 가사 검색 버튼이 표시됩니다.
+  </p>
+</div>
             <div>
               <label className="mb-2 block text-sm font-semibold">
                 카테고리

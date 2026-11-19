@@ -1263,13 +1263,15 @@ export async function POST(
     const body =
       await request.json();
 
-    const {
-      title,
-      artist,
-      level,
-      category,
-      difficulty,
-    } = body;
+   const {
+  title,
+  artist,
+  level,
+  category,
+  difficulty,
+  inst_url,
+  lyrics,
+} = body;
 
     if (!title || !artist) {
       return NextResponse.json(
@@ -1319,6 +1321,8 @@ export async function POST(
               : Number(
                   difficulty
                 ),
+inst_url: inst_url?.trim() || null,
+lyrics: lyrics?.trim() || null,
         })
         .select()
         .single();
@@ -1455,6 +1459,8 @@ export async function PATCH(
       category,
       difficulty,
       clearCover,
+  inst_url,
+  lyrics,
     } = body;
 
     if (!id) {
@@ -1508,7 +1514,13 @@ export async function PATCH(
       artist !== existingSong.artist;
 
     const updateData: any = {};
+if (inst_url !== undefined) {
+  updateData.inst_url = inst_url?.trim() || null;
+}
 
+if (lyrics !== undefined) {
+  updateData.lyrics = lyrics?.trim() || null;
+}
     if (title !== undefined) {
       updateData.title = title;
     }

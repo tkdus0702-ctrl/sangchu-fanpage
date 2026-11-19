@@ -131,11 +131,11 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.redirect(
-      new URL(
-        "/?autoconnect=1&soop=connected",
-        request.url
-      )
-    );
+  new URL(
+    "/songbook?autoconnect=1&soop=connected",
+    appUrl
+  )
+);
   } catch (error) {
     console.error("SOOP callback failed:", error);
 

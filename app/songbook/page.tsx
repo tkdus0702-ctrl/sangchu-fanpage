@@ -62,6 +62,8 @@ export default function Home() {
   const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
   const [artistFilter, setArtistFilter] = useState<Set<string>>(new Set());
   const [showAllArtists, setShowAllArtists] = useState(false);
+  const [artistModalOpen, setArtistModalOpen] = useState(false);
+const [artistModalSearch, setArtistModalSearch] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState<number | null>(
     null
   );
@@ -117,14 +119,27 @@ const [requestedSongIds, setRequestedSongIds] =
   const [userId, setUserId] = useState("");
   const [animatingLike, setAnimatingLike] = useState<number | null>(null);
 
-  // 수정
-  const [editingSong, setEditingSong] = useState<any | null>(null);
-  const [editTitle, setEditTitle] = useState("");
-  const [editArtist, setEditArtist] = useState("");
-  const [editCategory, setEditCategory] = useState<string[]>([]);
-  const [editDifficulty, setEditDifficulty] = useState<number | null>(null);
-  const [savingEdit, setSavingEdit] = useState(false);
+// 수정
+const [editingSong, setEditingSong] = useState<any | null>(null);
+const [editTitle, setEditTitle] = useState("");
+const [editArtist, setEditArtist] = useState("");
+const [editCategory, setEditCategory] = useState<string[]>([]);
+const [editDifficulty, setEditDifficulty] = useState<number | null>(null);
+const [editInstUrl, setEditInstUrl] = useState("");
+const [editLyrics, setEditLyrics] = useState("");
+const [savingEdit, setSavingEdit] = useState(false);
 
+// 가사 보기 모달
+const [songMediaModal, setSongMediaModal] = useState<any>(null);
+const [instExpanded, setInstExpanded] = useState(false);
+const [lyricsExpanded, setLyricsExpanded] = useState(false);
+const [isEditingInstUrl, setIsEditingInstUrl] = useState(false);
+const [instUrlDraft, setInstUrlDraft] = useState("");
+const [savingInstUrl, setSavingInstUrl] = useState(false);
+
+const [isEditingLyrics, setIsEditingLyrics] = useState(false);
+const [lyricsDraft, setLyricsDraft] = useState("");
+const [savingLyrics, setSavingLyrics] = useState(false);
   // 카테고리 목록 조회
   const fetchNotice = async () => {
     try {
@@ -1322,26 +1337,168 @@ useEffect(() => {
         : [...prev, category]
     );
   };
-
-  // 수정창 열기
-  const openEdit = (song: any) => {
-    setEditingSong(song);
-    setEditTitle(song.title || "");
-    setEditArtist(song.artist || "");
-    setEditCategory(parseCategories(song.category));
-    setEditDifficulty(
-      song.difficulty ?? null
+// 가사 보기 또는 검색
+const handleInstAction = (song: any) => {
+  // INST 주소가 없으면 바로 유튜브 검색
+  if (!song.inst_url?.trim()) {
+    window.open(
+      `https://www.youtube.com/results?search_query=${encodeURIComponent(
+        `${song.title} ${song.artist} inst`
+      )}`,
+      "_blank",
+      "noopener,noreferrer"
     );
-  };
+    return;
+  }
 
-  // 수정창 닫기
-  const closeEdit = () => {
-    setEditingSong(null);
-    setEditTitle("");
-    setEditArtist("");
-    setEditCategory([]);
-    setEditDifficulty(null);
-  };
+  // 영상은 펼치고 가사는 접은 상태로 모달 열기
+  setInstExpanded(true);
+  setLyricsExpanded(false);
+  setSongMediaModal(song);
+};
+
+const handleLyricsAction = (song: any) => {
+  // 가사가 없으면 바로 구글 검색
+  if (!song.lyrics?.trim()) {
+    window.open(
+      `https://www.google.com/search?q=${encodeURIComponent(
+        `${song.title} ${song.artist} 가사`
+      )}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+    return;
+  }
+
+  // 가사는 펼치고 영상은 접은 상태로 모달 열기
+  setInstExpanded(false);
+  setLyricsExpanded(true);
+  setSongMediaModal(song);
+};
+const handleSaveInstUrl = async () => {
+  if (!songMediaModal) return;
+
+  setSavingInstUrl(true);
+
+  try {
+    const response = await fetch("/api/songs", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: songMediaModal.id,
+        inst_url: instUrlDraft,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      alert(result.error || "영상 링크 저장에 실패했어요.");
+      return;
+    }
+
+    setSongs((prev: any[]) =>
+      prev.map((song) =>
+        song.id === songMediaModal.id ? result.song : song
+      )
+    );
+
+    setSongMediaModal(result.song);
+    setIsEditingInstUrl(false);
+
+    alert("영상 링크가 수정되었어요!");
+  } catch (error) {
+    console.error(error);
+    alert("영상 링크 저장 중 오류가 발생했어요.");
+  } finally {
+    setSavingInstUrl(false);
+  }
+};
+const handleSaveLyrics = async () => {
+  if (!songMediaModal) return;
+
+  setSavingLyrics(true);
+
+  try {
+    const response = await fetch("/api/songs", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: songMediaModal.id,
+        lyrics: lyricsDraft,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      alert(result.error || "가사 저장에 실패했어요.");
+      return;
+    }
+
+    setSongs((prev: any[]) =>
+      prev.map((song) =>
+        song.id === songMediaModal.id ? result.song : song
+      )
+    );
+
+    setSongMediaModal(result.song);
+    setIsEditingLyrics(false);
+
+    alert("가사가 수정되었어요!");
+  } catch (error) {
+    console.error(error);
+    alert("가사 저장 중 오류가 발생했어요.");
+  } finally {
+    setSavingLyrics(false);
+  }
+};
+const getYoutubeEmbedUrl = (url: string) => {
+  try {
+    const parsed = new URL(url);
+    let videoId = "";
+
+    if (parsed.hostname.includes("youtu.be")) {
+      videoId = parsed.pathname.slice(1);
+    } else if (parsed.hostname.includes("youtube.com")) {
+      videoId =
+        parsed.searchParams.get("v") ||
+        parsed.pathname.match(/\/(?:embed|shorts)\/([^/?]+)/)?.[1] ||
+        "";
+    }
+
+    return videoId
+      ? `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`
+      : null;
+  } catch {
+    return null;
+  }
+};
+// 수정창 열기
+const openEdit = (song: any) => {
+  setEditingSong(song);
+  setEditTitle(song.title || "");
+  setEditArtist(song.artist || "");
+  setEditCategory(parseCategories(song.category));
+  setEditDifficulty(song.difficulty ?? null);
+  setEditInstUrl(song.inst_url || "");
+  setEditLyrics(song.lyrics || "");
+};
+
+ // 수정창 닫기
+const closeEdit = () => {
+  setEditingSong(null);
+  setEditTitle("");
+  setEditArtist("");
+  setEditCategory([]);
+  setEditDifficulty(null);
+  setEditInstUrl("");
+  setEditLyrics("");
+};
 
   // 노래 수정
   const handleEdit = async () => {
@@ -1366,12 +1523,14 @@ useEffect(() => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: editingSong.id,
-          title: editTitle.trim(),
-          artist: editArtist.trim(),
-          category: editCategory.join(","),
-          difficulty: editDifficulty,
-        }),
+  id: editingSong.id,
+  title: editTitle.trim(),
+  artist: editArtist.trim(),
+  category: editCategory.join(","),
+  difficulty: editDifficulty,
+  inst_url: editInstUrl.trim(),
+  lyrics: editLyrics,
+}),
       });
 
       const result = await response.json();
@@ -1920,11 +2079,456 @@ const matchesCategory =
     </div>
   </div>
 )}
+{/* 가수 선택 모달 */}
+{artistModalOpen && (
+  <div
+    className="fixed inset-0 z-[9997] flex items-center justify-center bg-black/55 px-4 py-6 backdrop-blur-[3px]"
+    onClick={() => setArtistModalOpen(false)}
+  >
+    <div
+      className="flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-[#dce8c6] bg-[#fdfefb] shadow-2xl"
+      onClick={(event) => event.stopPropagation()}
+    >
+      {/* 헤더 */}
+      <div className="flex shrink-0 items-center justify-between border-b border-[#e4efd5] bg-[#f7f9f0] px-6 py-5">
+        <div>
+          <p className="text-xs font-bold tracking-widest text-[#8caf59]">
+            SANGCHU SONGBOOK
+          </p>
+          <h2 className="mt-1 text-lg font-extrabold text-[#416b36]">
+            🎤 가수 선택
+          </h2>
+          <p className="mt-1 text-xs text-[#82936e]">
+            원하는 가수를 여러 명 선택할 수 있어요.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setArtistModalOpen(false)}
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-[#dce8c6] bg-white text-lg text-[#82936e] hover:bg-[#edf5df]"
+          aria-label="닫기"
+        >
+          ✕
+        </button>
+      </div>
+
+      {/* 검색 및 선택 상태 */}
+      <div className="shrink-0 space-y-3 border-b border-[#e4efd5] px-6 py-4">
+        <input
+          type="text"
+          value={artistModalSearch}
+          onChange={(e) => setArtistModalSearch(e.target.value)}
+          placeholder="가수 이름 검색..."
+          className="w-full rounded-xl border border-[#dce8c6] bg-white px-4 py-3 text-sm text-[#416b36] outline-none focus:border-[#8caf59]"
+        />
+
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <span className="text-xs font-medium text-[#82936e]">
+            총 {allArtists.length}명 · {artistFilter.size}명 선택됨
+          </span>
+
+          <button
+            type="button"
+            onClick={() => setArtistFilter(new Set())}
+            className="rounded-lg border border-[#dce8c6] px-3 py-1.5 text-xs font-medium text-[#8caf59] hover:bg-[#f7f9f0]"
+          >
+            전체 선택 해제
+          </button>
+        </div>
+      </div>
+
+      {/* 가수 목록 */}
+      <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">
+        {allArtists.filter((artist) =>
+          artist.toLowerCase().includes(
+            artistModalSearch.trim().toLowerCase()
+          )
+        ).length === 0 ? (
+          <div className="py-12 text-center text-sm text-[#a0ad91]">
+            검색 결과가 없습니다.
+          </div>
+        ) : (
+          <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-6 lg:grid-cols-8">
+            {allArtists
+              .filter((artist) =>
+                artist.toLowerCase().includes(
+                  artistModalSearch.trim().toLowerCase()
+                )
+              )
+              .map((artist) => {
+                const selected = artistFilter.has(artist);
+
+                return (
+                  <button
+                    key={artist}
+                    type="button"
+                    onClick={() =>
+                      setArtistFilter((current) => {
+                        const next = new Set(current);
+
+                        if (next.has(artist)) {
+                          next.delete(artist);
+                        } else {
+                          next.add(artist);
+                        }
+
+                        return next;
+                      })
+                    }
+                    className={
+                      selected
+                        ? "rounded-lg border border-[#8caf59] bg-[#eaf2df] px-2 py-2 text-left text-xs font-semibold text-[#416b36] transition"
+                        : "rounded-lg border border-[#e4eadb] bg-white px-2 py-2 text-left text-xs text-[#416b36] transition hover:border-[#a9c98b] hover:bg-[#f7f9f0]"
+                    }
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="min-w-0 truncate">
+                        {artist}
+                      </span>
+
+                      {selected && (
+                        <span className="shrink-0 text-[#8caf59]">
+                          ✓
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="mt-0.5 text-[10px] text-[#82936e]">
+                      노래 {artistSongCounts.get(artist) ?? 0}곡
+                    </p>
+                  </button>
+                );
+              })}
+          </div>
+        )}
+      </div>
+
+      {/* 하단 */}
+      <div className="flex shrink-0 items-center justify-between gap-3 border-t border-[#e4efd5] bg-white px-6 py-4">
+        <span className="text-xs text-[#82936e]">
+          {artistFilter.size === 0
+            ? "전체 가수 표시"
+            : `${artistFilter.size}명의 가수 선택`}
+        </span>
+
+        <button
+          type="button"
+          onClick={() => setArtistModalOpen(false)}
+          className="rounded-xl bg-[#8caf59] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#739b45]"
+        >
+          선택 완료
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+{/* 통합 노래 감상실 */}
+{songMediaModal && (
+  <div
+    className="fixed inset-0 z-[10001] flex items-center justify-center overflow-y-auto bg-black/70 px-3 py-5 backdrop-blur-sm"
+    onClick={() => setSongMediaModal(null)}
+  >
+    <div
+      className="my-auto w-full max-w-5xl overflow-hidden rounded-3xl border border-[#dce8c6] bg-[#fdfefb] shadow-2xl"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* 상단 제목 */}
+      <div className="flex items-center justify-between border-b border-[#e4efd5] bg-[#f7f9f0] px-5 py-4">
+        <div className="min-w-0">
+          <p className="text-xs font-bold tracking-widest text-[#8caf59]">
+            SANGCHU SONGBOOK · MUSIC ROOM
+          </p>
+          <h2 className="mt-1 truncate text-lg font-extrabold text-[#416b36]">
+            {songMediaModal.title}
+          </h2>
+          <p className="text-sm text-[#82936e]">
+            {songMediaModal.artist}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setSongMediaModal(null)}
+          className="ml-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-lg text-[#82936e] shadow-sm transition hover:bg-[#e4efd5]"
+        >
+          ✕
+        </button>
+      </div>
+
+      {/* 영상 + 가사 아코디언 */}
+<div className="grid grid-cols-1 items-start gap-4 bg-[#fbfcf8] p-4 sm:p-5 md:grid-cols-2">
+
+  {/* INST 영상 영역 */}
+  <div className="overflow-hidden rounded-2xl border border-[#dce8c6] bg-white">
+
+    <button
+      type="button"
+      onClick={() => setInstExpanded(!instExpanded)}
+      className="flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-[#f7f9f0]"
+    >
+      <div>
+        <h3 className="font-bold text-[#416b36]">
+          ▶ INST 영상
+        </h3>
+        <p className="mt-1 text-xs text-[#82936e]">
+          {songMediaModal.inst_url?.trim()
+            ? "등록된 INST 영상"
+            : "등록된 영상이 없습니다."}
+        </p>
+      </div>
+
+      <span className="text-lg text-[#8caf59]">
+        {instExpanded ? "−" : "+"}
+      </span>
+    </button>
+
+    {instExpanded && (
+      <div className="border-t border-[#e4efd5]">
+        <div className="aspect-video w-full max-w-full bg-black">
+          {songMediaModal.inst_url?.trim() &&
+          getYoutubeEmbedUrl(songMediaModal.inst_url) ? (
+            <iframe
+              src={getYoutubeEmbedUrl(songMediaModal.inst_url) || ""}
+              title={`${songMediaModal.title} INST`}
+              className="h-full w-full"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <div className="flex h-full flex-col items-center justify-center gap-3 px-4 text-center text-white">
+              <span className="text-4xl">♫</span>
+              <p className="text-sm text-white/70">
+                재생할 수 있는 영상이 없어요.
+              </p>
+              <button
+                type="button"
+                onClick={() =>
+                  window.open(
+                    `https://www.youtube.com/results?search_query=${encodeURIComponent(
+                      `${songMediaModal.title} ${songMediaModal.artist} inst`
+                    )}`,
+                    "_blank",
+                    "noopener,noreferrer"
+                  )
+                }
+                className="rounded-xl bg-white px-4 py-2 text-sm font-bold text-[#416b36]"
+              >
+                유튜브에서 검색
+              </button>
+            </div>
+          )}
+        </div>
+
+       
+<div className="border-t border-[#e4efd5] px-4 py-3">
+  <div className="flex items-center justify-between gap-3">
+    {songMediaModal.inst_url?.trim() ? (
+      <button
+        type="button"
+        onClick={() =>
+          window.open(
+            songMediaModal.inst_url,
+            "_blank",
+            "noopener,noreferrer"
+          )
+        }
+        className="text-xs font-semibold text-[#8caf59] hover:underline"
+      >
+        유튜브에서 영상 열기 ↗
+      </button>
+    ) : (
+      <span className="text-xs text-[#82936e]">
+        등록된 영상 링크가 없어요.
+      </span>
+    )}
+
+    {isAdmin && (
+      <button
+        type="button"
+        onClick={() => {
+          setInstUrlDraft(songMediaModal.inst_url || "");
+          setIsEditingInstUrl(!isEditingInstUrl);
+        }}
+        className="rounded-lg border border-[#dce8c6] px-3 py-2 text-xs font-bold text-[#416b36] transition hover:bg-[#f7f9f0]"
+      >
+        ✏️ 영상 링크 수정
+      </button>
+    )}
+  </div>
+
+  {isAdmin && isEditingInstUrl && (
+    <div className="mt-3 flex flex-col gap-2">
+      <input
+        type="url"
+        value={instUrlDraft}
+        onChange={(e) => setInstUrlDraft(e.target.value)}
+        placeholder="유튜브 영상 URL을 입력하세요."
+        className="w-full rounded-xl border border-[#dce8c6] px-3 py-2.5 text-sm outline-none focus:border-[#8caf59]"
+      />
+
+      <div className="flex justify-end gap-2">
+        <button
+          type="button"
+          onClick={() => setIsEditingInstUrl(false)}
+          className="rounded-lg border border-[#dce8c6] px-3 py-2 text-xs text-[#82936e]"
+        >
+          취소
+        </button>
+
+        <button
+          type="button"
+          onClick={handleSaveInstUrl}
+          disabled={savingInstUrl}
+          className="rounded-lg bg-[#8caf59] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#769c48] disabled:opacity-50"
+        >
+          {savingInstUrl ? "저장 중..." : "저장"}
+        </button>
+      </div>
+    </div>
+  )}
+</div>
+
+      </div>
+    )}
+  </div>
+
+  
+
+{/* 가사 영역 */}
+<div className="overflow-hidden rounded-2xl border border-[#dce8c6] bg-white">
+
+  <button
+    type="button"
+    onClick={() => setLyricsExpanded(!lyricsExpanded)}
+    className="flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-[#f7f9f0]"
+  >
+    <div>
+      <h3 className="font-bold text-[#416b36]">
+        ♬ 가사
+      </h3>
+      <p className="mt-1 text-xs text-[#82936e]">
+        {songMediaModal.lyrics?.trim()
+          ? "등록된 가사"
+          : "등록된 가사가 없습니다."}
+      </p>
+    </div>
+
+    <div className="flex shrink-0 items-center gap-3">
+      {isAdmin && (
+        <span
+          role="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!isEditingLyrics) {
+              setLyricsDraft(songMediaModal.lyrics || "");
+              setLyricsExpanded(true);
+            }
+            setIsEditingLyrics(!isEditingLyrics);
+          }}
+          className="rounded-lg border border-[#dce8c6] bg-white px-3 py-2 text-xs font-bold text-[#416b36] transition hover:bg-[#edf5df]"
+        >
+          {isEditingLyrics ? "수정 취소" : "✏️ 가사 수정"}
+        </span>
+      )}
+
+      <span className="text-lg text-[#8caf59]">
+        {lyricsExpanded ? "−" : "+"}
+      </span>
+    </div>
+  </button>
+
+  {lyricsExpanded && (
+    <div className="border-t border-[#e4efd5]">
+
+      {/* 가사 수정 모드 */}
+      {isAdmin && isEditingLyrics ? (
+        <div className="p-4">
+          <textarea
+            value={lyricsDraft}
+            onChange={(e) => setLyricsDraft(e.target.value)}
+            placeholder="가사를 입력하세요."
+            rows={14}
+            className="w-full resize-y rounded-xl border border-[#dce8c6] px-4 py-3 text-sm leading-7 text-[#526348] outline-none focus:border-[#8caf59]"
+          />
+
+          <div className="mt-3 flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => setIsEditingLyrics(false)}
+              className="rounded-lg border border-[#dce8c6] px-3 py-2 text-xs text-[#82936e]"
+            >
+              취소
+            </button>
+
+            <button
+              type="button"
+              onClick={handleSaveLyrics}
+              disabled={savingLyrics}
+              className="rounded-lg bg-[#8caf59] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#769c48] disabled:opacity-50"
+            >
+              {savingLyrics ? "저장 중..." : "가사 저장"}
+            </button>
+          </div>
+        </div>
+      ) : songMediaModal.lyrics?.trim() ? (
+        <div className="max-h-[55vh] overflow-y-auto px-5 py-5 md:max-h-[460px]">
+          <p className="whitespace-pre-wrap break-words text-sm leading-8 text-[#526348]">
+            {songMediaModal.lyrics}
+          </p>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center gap-3 px-5 py-8 text-center">
+          <span className="text-3xl text-[#dce8c6]">♫</span>
+          <p className="text-sm text-[#82936e]">
+            등록된 가사가 없어요.
+          </p>
+          <button
+            type="button"
+            onClick={() =>
+              window.open(
+                `https://www.google.com/search?q=${encodeURIComponent(
+                  `${songMediaModal.title} ${songMediaModal.artist} 가사`
+                )}`,
+                "_blank",
+                "noopener,noreferrer"
+              )
+            }
+            className="rounded-xl bg-[#8caf59] px-4 py-2 text-sm font-bold text-white transition hover:bg-[#769c48]"
+          >
+            구글에서 가사 검색
+          </button>
+        </div>
+      )}
+    </div>
+  )}
+</div>
+
+</div>
+
+
+      {/* 하단 */}
+      <div className="flex items-center justify-between border-t border-[#e4efd5] bg-[#f7f9f0] px-5 py-3">
+        <span className="text-xs font-medium text-[#a0ad91]">
+          SANGCHU SONGBOOK
+        </span>
+        <button
+          type="button"
+          onClick={() => setSongMediaModal(null)}
+          className="rounded-lg border border-[#dce8c6] bg-white px-4 py-2 text-xs font-bold text-[#416b36] hover:bg-[#edf5df]"
+        >
+          닫기
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* 수정 모달 */}
       {editingSong && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 px-6">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+        <div className="fixed inset-0 z-[9999] overflow-y-auto bg-black/40 px-4 py-6">
+  <div className="mx-auto my-auto w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
             <h2 className="text-lg font-bold">
               노래 수정
             </h2>
@@ -2047,7 +2651,36 @@ const matchesCategory =
                 )}
               </div>
             </div>
+{/* INST / MR 링크 */}
+<div className="mt-4">
+  <label className="mb-2 block text-sm font-semibold">
+    INST / MR 링크
+  </label>
+  <input
+    type="url"
+    value={editInstUrl}
+    onChange={(e) => setEditInstUrl(e.target.value)}
+    placeholder="YouTube 또는 INST 영상 주소"
+    className="w-full rounded-xl border border-[#dce8c6] bg-[#f7f9f0] px-4 py-3 text-sm outline-none focus:border-[#8caf59]"
+  />
+  <p className="mt-1 text-xs text-[#82936e]">
+    입력한 주소는 앨범 커버의 INST 버튼에 연결됩니다.
+  </p>
+</div>
 
+{/* 가사 */}
+<div className="mt-4">
+  <label className="mb-2 block text-sm font-semibold">
+    노래 가사
+  </label>
+  <textarea
+    value={editLyrics}
+    onChange={(e) => setEditLyrics(e.target.value)}
+    rows={8}
+    placeholder="가사를 직접 입력해주세요. 줄바꿈도 그대로 표시됩니다."
+    className="w-full resize-y rounded-xl border border-[#dce8c6] bg-[#f7f9f0] px-4 py-3 text-sm leading-6 outline-none focus:border-[#8caf59]"
+  />
+</div>
             <div className="mt-6 flex gap-2">
               <button
                 onClick={closeEdit}
@@ -2305,82 +2938,87 @@ const matchesCategory =
             )}
           </div>
 
-          <div className="mt-3">
-            <p className="mb-2 text-xs font-black tracking-wide text-[#416b36]">
-              가수
-            </p>
+         
+{/* 가수 */}
+<div>
+  <div className="mb-2">
+    <p className="text-xs font-black tracking-wide text-[#416b36]">
+      가수
+    </p>
+  </div>
 
-            {allArtists.length === 0 ? (
-              <p className="text-sm text-[#a0ad91]">
-                등록된 가수가 없습니다.
-              </p>
-            ) : (
-              <>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setArtistFilter(new Set())}
-                    className={
-                      artistFilter.size === 0
-                        ? "rounded-full bg-[#8caf59] px-2.5 py-1.5 text-xs text-white"
-                        : "rounded-full border border-[#dce8c6] bg-white px-2.5 py-1.5 text-xs text-[#416b36] hover:bg-[#f7f9f0]"
-                    }
-                  >
-                    전체
-                  </button>
+  <div className="flex flex-wrap gap-2">
+    {/* 전체 */}
+    <button
+      type="button"
+      onClick={() => setArtistFilter(new Set())}
+      className={
+        artistFilter.size === 0
+          ? "rounded-full bg-[#8caf59] px-2.5 py-1.5 text-xs text-white"
+          : "rounded-full border border-[#dce8c6] bg-white px-2.5 py-1.5 text-xs text-[#416b36] hover:bg-[#f7f9f0]"
+      }
+    >
+      전체
+    </button>
 
-                  {visibleArtists.map((artist) => {
-                    const selected = artistFilter.has(artist);
-                    return (
-                      <button
-                        key={artist}
-                        type="button"
-                        onClick={() =>
-                          setArtistFilter((current) => {
-                            const next = new Set(current);
-                            if (next.has(artist)) {
-                              next.delete(artist);
-                            } else {
-                              next.add(artist);
-                            }
-                            return next;
-                          })
-                        }
-                        className={
-                          selected
-                            ? "rounded-full bg-[#8caf59] px-2.5 py-1.5 text-xs text-white"
-                            : "rounded-full border border-[#dce8c6] bg-white px-2.5 py-1.5 text-xs text-[#416b36] hover:bg-[#f7f9f0]"
-                        }
-                      >
-                        {selected && "✓ "}
-                        {artist}
-                        <span className={selected ? "ml-1 text-white/80" : "ml-1 text-[#82936e]"}>
-                          {artistSongCounts.get(artist) ?? 0}
-                        </span>
-                      </button>
-                    );
-                  })}
+    {/* 노래가 많은 가수 8명 */}
+    {visibleArtists.slice(0, 8).map((artist) => {
+      const selected = artistFilter.has(artist);
 
-                  {allArtists.length > 8 && (
-                    <button
-                      type="button"
-                      onClick={() => setShowAllArtists((current) => !current)}
-                      className="rounded-full border border-dashed border-[#a9c9b4] bg-[#f7f9f0] px-2.5 py-1.5 text-xs font-medium text-[#8caf59] transition hover:bg-[#edf5df]"
-                    >
-                      {showAllArtists
-                        ? "접기"
-                        : `전체 보기 (+${allArtists.length - 8})`}
-                    </button>
-                  )}
-                </div>
-                {artistFilter.size > 0 && (
-                  <p className="mt-2 text-xs text-[#82936e]">
-                    {Array.from(artistFilter).join(", ")}의 노래를 표시하고 있습니다. 여러 가수를 선택하면 선택한 가수들의 노래가 모두 표시됩니다.
-                  </p>
-                )}
-              </>
-            )}
-          </div>
+      return (
+        <button
+          key={artist}
+          type="button"
+          onClick={() =>
+            setArtistFilter((current) => {
+              const next = new Set(current);
+
+              if (next.has(artist)) {
+                next.delete(artist);
+              } else {
+                next.add(artist);
+              }
+
+              return next;
+            })
+          }
+          className={
+            selected
+              ? "rounded-full bg-[#8caf59] px-2.5 py-1.5 text-xs text-white"
+              : "rounded-full border border-[#dce8c6] bg-white px-2.5 py-1.5 text-xs text-[#416b36] hover:bg-[#f7f9f0]"
+          }
+        >
+          {selected && "✓ "}
+          {artist}
+          <span className={selected ? "ml-1 text-white/80" : "ml-1 text-[#82936e]"}>
+            {artistSongCounts.get(artist) ?? 0}
+          </span>
+        </button>
+      );
+    })}
+
+    {/* 전체 가수 모달 */}
+    {allArtists.length > 8 && (
+      <button
+        type="button"
+        onClick={() => {
+          setArtistModalSearch("");
+          setArtistModalOpen(true);
+        }}
+        className="rounded-full border border-dashed border-[#a9c9b4] bg-[#f7f9f0] px-2.5 py-1.5 text-xs font-medium text-[#8caf59] hover:bg-[#edf5df]"
+      >
+        전체 보기 +{allArtists.length - 8}
+      </button>
+    )}
+  </div>
+
+  {artistFilter.size > 0 && (
+    <p className="mt-2 text-xs text-[#82936e]">
+      선택한 가수: {Array.from(artistFilter).join(", ")}
+    </p>
+  )}
+</div>
+
 
           <div className="mt-3">
             <p className="mb-2 text-xs font-black tracking-wide text-[#416b36]">
@@ -2651,6 +3289,30 @@ const matchesCategory =
                           </div>
                         </div>
                       )}
+                    {/* 표지 하단 버튼 */}
+<div className="absolute bottom-0 left-0 right-0 z-20 flex">
+  <button
+    type="button"
+    onClick={(e) => {
+      e.stopPropagation();
+      handleInstAction(song);
+    }}
+    className="flex-1 bg-white/95 px-1 py-2 text-center text-[10px] font-bold text-[#416b36] transition hover:bg-[#edf5df]"
+  >
+    ▶ INST {song.inst_url?.trim() ? "재생" : "검색"}
+  </button>
+
+  <button
+    type="button"
+    onClick={(e) => {
+      e.stopPropagation();
+      handleLyricsAction(song);
+    }}
+    className="flex-1 border-l border-[#dce8c6] bg-white/95 px-1 py-2 text-center text-[10px] font-bold text-[#416b36] transition hover:bg-[#edf5df]"
+  >
+    ♬ 가사 {song.lyrics?.trim() ? "보기" : "검색"}
+  </button>
+</div>
                     </div>
                   )}
 
@@ -2695,92 +3357,111 @@ const matchesCategory =
                           </span>
                         </div>
                       )}
+                      
                     </div>
                   )}
 
                   {/* 노래 정보 */}
-                  <div
-                    className={
-                      viewMode ===
-"grid"
-  ? "min-w-0 flex-1 p-4"
-                        : "min-w-0 flex-1"
-                    }
-                  >
-                    <h3 className="font-bold whitespace-nowrap">
-                      {song.title}
-                    </h3>
+<div
+  className={
+    viewMode === "grid"
+      ? "min-w-0 flex-1 p-4"
+      : "flex min-w-0 flex-1 items-center"
+  }
+>
+  {/* 제목 및 아티스트 */}
+  <div className="min-w-0 flex-1">
+    <h3 className="truncate font-bold">
+      {song.title}
+    </h3>
 
-                    <p className="whitespace-normal break-words leading-snug text-[#82936e]">
-                      {song.artist}
-                    </p>
+    <p className="whitespace-normal break-words leading-snug text-[#82936e]">
+      {song.artist}
+    </p>
 
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {parseCategories(song.category).map((category) => (
-                        <span
-                          key={category}
-                          className="rounded-full bg-[#e4efd5] px-2.5 py-1 text-xs text-[#8caf59]"
-                        >
-                          {category}
-                        </span>
-                      ))}
+    <div className="mt-2 flex flex-wrap gap-1.5">
+      {parseCategories(song.category).map((category) => (
+        <span
+          key={category}
+          className="rounded-full bg-[#e4efd5] px-2.5 py-1 text-xs text-[#8caf59]"
+        >
+          {category}
+        </span>
+      ))}
 
-                      {song.difficulty && (
-                        <span className="rounded-full bg-[#f7f9f0] px-2.5 py-1 text-xs text-[#8caf59]">
-                          {"⭐".repeat(
-                            song.difficulty
-                          )}
-                        </span>
-                      )}
-                    </div>
+      {song.difficulty && (
+        <span className="rounded-full bg-[#f7f9f0] px-2.5 py-1 text-xs text-[#8caf59]">
+          {"⭐".repeat(song.difficulty)}
+        </span>
+      )}
+    </div>
 
-                 {/* 관리자 버튼 */}
-{isAdmin && (
-  <div
-    className={
-      viewMode === "grid"
-        ? "mt-4 flex flex-wrap items-center gap-2"
-        : "mt-3 flex flex-wrap items-center gap-2"
-    }
-  >
-    <button
-      onClick={() =>
-        openEdit(song)
-      }
-      className="rounded-lg border border-[#dce8c6] px-3 py-1.5 text-xs font-medium text-[#8caf59] transition hover:bg-[#f7f9f0]"
-    >
-      ✏️ 수정
-    </button>
-
-    {/* 커버가 있을 때만 표시 */}
-    {song.cover_url && (
-      <button
-        onClick={() =>
-          handleDeleteCover(
-            song.id,
-            song.title
-          )
+    {/* 관리자 버튼 */}
+    {isAdmin && (
+      <div
+        className={
+          viewMode === "grid"
+            ? "mt-4 flex flex-wrap items-center gap-2"
+            : "mt-3 flex flex-wrap items-center gap-2"
         }
-        className="rounded-lg border border-[#dce8c6] px-3 py-1.5 text-xs font-medium text-[#82936e] transition hover:bg-[#f7f9f0]"
       >
-        🖼️ 커버 삭제
-      </button>
-    )}
+        <button
+          onClick={() => openEdit(song)}
+          className="rounded-lg border border-[#dce8c6] px-3 py-1.5 text-xs font-medium text-[#8caf59] transition hover:bg-[#f7f9f0]"
+        >
+          ✏️ 수정
+        </button>
 
-    <button
-      onClick={() =>
-        handleDelete(
-          song.id,
-          song.title
-        )
-      }
-      className="rounded-lg border border-[#dce8c6] px-3 py-1.5 text-xs font-medium text-[#7965b4] transition hover:bg-[#f0ebfb]"
-    >
-      삭제
-    </button>
+        {song.cover_url && (
+          <button
+            onClick={() =>
+              handleDeleteCover(song.id, song.title)
+            }
+            className="rounded-lg border border-[#dce8c6] px-3 py-1.5 text-xs font-medium text-[#82936e] transition hover:bg-[#f7f9f0]"
+          >
+            🖼️ 커버 삭제
+          </button>
+        )}
+
+        <button
+          onClick={() =>
+            handleDelete(song.id, song.title)
+          }
+          className="rounded-lg border border-[#dce8c6] px-3 py-1.5 text-xs font-medium text-[#7965b4] transition hover:bg-[#f0ebfb]"
+        >
+          삭제
+        </button>
+      </div>
+    )}
   </div>
-)}
-                  </div>
+
+  {/* 리스트형 전용 INST / 가사 버튼 */}
+  {viewMode === "list" && (
+    <div className="ml-5 mr-12 flex shrink-0 flex-col gap-2">
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleInstAction(song);
+        }}
+        className="w-[100px] rounded-lg border border-[#dce8c6] bg-[#f7f9f0] px-2 py-2 text-xs font-bold text-[#416b36] transition hover:bg-[#edf5df]"
+      >
+        ▶ INST {song.inst_url?.trim() ? "재생" : "검색"}
+      </button>
+
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleLyricsAction(song);
+        }}
+        className="w-[100px] rounded-lg border border-[#dce8c6] bg-[#f7f9f0] px-2 py-2 text-xs font-bold text-[#416b36] transition hover:bg-[#edf5df]"
+      >
+        ♬ 가사 {song.lyrics?.trim() ? "보기" : "검색"}
+      </button>
+    </div>
+  )}
+</div>
 
                   {/* 좋아요 */}
 <button
