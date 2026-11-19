@@ -133,7 +133,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(
   new URL(
     "/songbook?autoconnect=1&soop=connected",
-    appUrl
+    url.origin
   )
 );
   } catch (error) {
