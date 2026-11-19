@@ -1143,22 +1143,22 @@ const logoutSoop = async () => {
   }, []);
 
   // 관리자 상태 확인
-  useEffect(() => {
-    const checkAdmin = async () => {
-      try {
-        const response = await fetch("/api/admin-check");
-        const result = await response.json();
+useEffect(() => {
+  const checkAdmin = () => {
+    fetch("/api/admin-check", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => setIsAdmin(data.success))
+      .catch(() => setIsAdmin(false));
+  };
 
-        if (result.success) {
-          setIsAdmin(true);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  checkAdmin();
 
-    checkAdmin();
-  }, []);
+  window.addEventListener("admin-status-change", checkAdmin);
+
+  return () => {
+    window.removeEventListener("admin-status-change", checkAdmin);
+  };
+}, []);
 
   // 페이지 진입 시 동적 카테고리 목록 조회
   useEffect(() => {
@@ -1700,17 +1700,7 @@ const matchesCategory =
               <div>
          <h1 className="flex items-center gap-2 text-xl font-extrabold tracking-tight text-[#416b36]">
   유상츄 노래책  🎙️
-  <button
-    type="button"
-    onClick={(event) => {
-      event.stopPropagation();
-      setNoticeOpen((value) => !value);
-      setNoticeEditing(false);
-    }}
-    className="rounded-full border border-[#dce8c6] bg-white px-2.5 py-1.5 text-xs font-semibold text-[#8caf59] shadow-sm transition hover:bg-[#edf5df] sm:text-sm ml-3 "
-  >
-    📢 {notice.title || "노래책 공지"}
-  </button>
+
 </h1>
 
                 <p className="mt-0.5 text-xs text-[#82936e]">
@@ -1721,16 +1711,6 @@ const matchesCategory =
           </div>
 
           <div className="flex items-center gap-2">
-            {!isAdmin && (
-              <button
-                onClick={() =>
-                  setShowLogin(true)
-                }
-                className="rounded-full border border-[#dce8c6] bg-white px-4 py-2 text-sm font-medium text-[#8caf59] transition hover:bg-[#edf5df]"
-              >
-                🔒 관리자 로그인
-              </button>
-            )}
 
             {isAdmin && (
               <>
@@ -1801,97 +1781,145 @@ const matchesCategory =
                     : "🖼️ 커버 자동 찾기"}
                 </button>
 
-                <button
-                  onClick={
-                    handleAdminLogout
-                  }
-                  className="rounded-full border border-[#dce8c6] bg-white px-4 py-2 text-sm font-medium text-[#8caf59] transition hover:bg-[#edf5df]"
-                >
-                  로그아웃
-                </button>
               </>
             )}
           </div>
         </div>
       </header>
 
-      {noticeOpen && (
-        <section className="mx-auto mt-4 max-w-6xl px-4 sm:px-6">
-          <div className="rounded-2xl border border-[#cfe2d5] bg-white p-4 shadow-sm sm:p-5">
-            <div className="flex items-center justify-between gap-3">
-              <h2 className="font-bold text-[#416b36]">📢 {notice.title}</h2>
-              <div className="flex shrink-0 gap-2">
-                {isAdmin && !noticeEditing && <button type="button" onClick={() => { setNoticeTitleDraft(notice.title); setNoticeContentDraft(notice.content); setNoticeEditing(true); }} className="rounded-lg border border-[#dce8c6] px-3 py-1.5 text-xs font-semibold text-[#8caf59]">수정</button>}
-                <button type="button" onClick={() => setNoticeOpen(false)} className="rounded-lg bg-[#f7f9f0] px-3 py-1.5 text-xs text-[#8caf59]">닫기 ✕</button>
-              </div>
+
+
+  {/* 공지사항 모달 */}
+{noticeOpen && (
+  <div
+    className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/55 px-4 py-6 backdrop-blur-[3px]"
+    onClick={() => {
+      setNoticeOpen(false);
+      setNoticeEditing(false);
+    }}
+  >
+    <div
+      className="flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-[#dce8c6] bg-[#fdfefb] shadow-2xl"
+      onClick={(event) => event.stopPropagation()}
+    >
+      {/* 모달 헤더 */}
+      <div className="flex shrink-0 items-center justify-between border-b border-[#e4efd5] bg-[#f7f9f0] px-6 py-5 sm:px-8">
+        <div>
+          <p className="text-xs font-bold tracking-widest text-[#8caf59]">
+            SANGCHU SONGBOOK
+          </p>
+          <h2 className="mt-1 text-lg font-extrabold text-[#416b36] sm:text-xl">
+            📢 {notice.title || "노래책 필독사항"}
+          </h2>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            setNoticeOpen(false);
+            setNoticeEditing(false);
+          }}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#dce8c6] bg-white text-lg text-[#82936e] transition hover:bg-[#edf5df]"
+          aria-label="공지 닫기"
+        >
+          ✕
+        </button>
+      </div>
+
+      {/* 공지 내용 */}
+      <div className="min-h-0 flex-1 overflow-y-auto px-6 py-6 sm:px-8 sm:py-8">
+        {noticeEditing ? (
+          <div className="space-y-4">
+            <div>
+              <label className="mb-2 block text-sm font-bold text-[#416b36]">
+                공지 제목
+              </label>
+              <input
+                value={noticeTitleDraft}
+                onChange={(e) => setNoticeTitleDraft(e.target.value)}
+                maxLength={60}
+                placeholder="공지 제목"
+                className="w-full rounded-xl border border-[#dce8c6] bg-white px-4 py-3 text-sm text-[#416b36] outline-none focus:border-[#8caf59]"
+              />
             </div>
-            {noticeEditing ? (
-              <div className="mt-3 space-y-3">
-                <input value={noticeTitleDraft} onChange={(e) => setNoticeTitleDraft(e.target.value)} maxLength={60} placeholder="공지 제목" className="w-full rounded-xl border border-[#dce8c6] px-3 py-2 text-sm outline-none focus:border-[#8caf59]" />
-                <textarea value={noticeContentDraft} onChange={(e) => setNoticeContentDraft(e.target.value)} rows={5} maxLength={5000} placeholder="공지 내용을 입력해주세요." className="w-full resize-y rounded-xl border border-[#dce8c6] px-3 py-2 text-sm outline-none focus:border-[#8caf59]" />
-                <div className="flex justify-end gap-2">
-                  <button type="button" onClick={() => setNoticeEditing(false)} className="rounded-lg border border-[#dce8c6] px-4 py-2 text-sm text-[#82936e]">취소</button>
-                  <button type="button" onClick={() => void saveNotice()} disabled={noticeSaving} className="rounded-lg bg-[#8caf59] px-4 py-2 text-sm font-semibold text-white disabled:opacity-50">{noticeSaving ? "저장 중..." : "저장"}</button>
-                </div>
-              </div>
-            ) : <p className="mt-3 whitespace-pre-wrap break-words text-sm leading-7 text-[#416b36]">{notice.content}</p>}
+
+            <div>
+              <label className="mb-2 block text-sm font-bold text-[#416b36]">
+                공지 내용
+              </label>
+              <textarea
+                value={noticeContentDraft}
+                onChange={(e) => setNoticeContentDraft(e.target.value)}
+                rows={12}
+                maxLength={5000}
+                placeholder="공지 내용을 입력해주세요."
+                className="w-full resize-y rounded-xl border border-[#dce8c6] bg-white px-4 py-3 text-sm leading-7 text-[#416b36] outline-none focus:border-[#8caf59]"
+              />
+            </div>
           </div>
-        </section>
-      )}
+        ) : (
+          <div className="min-h-[180px] whitespace-pre-wrap break-words text-sm leading-8 text-[#416b36] sm:text-base sm:leading-9">
+            {notice.content}
+          </div>
+        )}
+      </div>
 
-      {/* 로그인 모달 */}
-      {showLogin && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 px-6">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
-            <h2 className="text-lg font-bold">
-              관리자 로그인
-            </h2>
+      {/* 모달 하단 버튼 */}
+      <div className="flex shrink-0 items-center justify-between gap-3 border-t border-[#e4efd5] bg-white px-6 py-4 sm:px-8">
+        <span className="text-xs text-[#a0ad91]">
+          유상츄 노래책
+        </span>
 
-            <p className="mt-1 text-sm text-[#82936e]">
-              관리자 비밀번호를 입력해주세요.
-            </p>
-
-            <input
-              type="password"
-              value={password}
-              onChange={(e) =>
-                setPassword(
-                  e.target.value
-                )
-              }
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleAdminLogin();
-                }
+        <div className="flex gap-2">
+          {isAdmin && !noticeEditing && (
+            <button
+              type="button"
+              onClick={() => {
+                setNoticeTitleDraft(notice.title);
+                setNoticeContentDraft(notice.content);
+                setNoticeEditing(true);
               }}
-              placeholder="비밀번호"
-              className="mt-5 w-full rounded-xl border border-[#dce8c6] bg-[#f7f9f0] px-4 py-3 text-sm outline-none focus:border-[#8caf59]"
-              autoFocus
-            />
+              className="rounded-xl border border-[#dce8c6] px-4 py-2.5 text-sm font-semibold text-[#8caf59] transition hover:bg-[#f7f9f0]"
+            >
+              ✏️ 수정
+            </button>
+          )}
 
-            <div className="mt-4 flex gap-2">
+          {noticeEditing && (
+            <>
               <button
-                onClick={() => {
-                  setShowLogin(false);
-                  setPassword("");
-                }}
-                className="flex-1 rounded-xl border border-[#dce8c6] px-4 py-3 text-sm font-medium text-[#8caf59] transition hover:bg-[#f7f9f0]"
+                type="button"
+                onClick={() => setNoticeEditing(false)}
+                className="rounded-xl border border-[#dce8c6] px-4 py-2.5 text-sm font-semibold text-[#82936e]"
               >
                 취소
               </button>
 
               <button
-                onClick={
-                  handleAdminLogin
-                }
-                className="flex-1 rounded-xl bg-[#8caf59] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#739b45]"
+                type="button"
+                onClick={() => void saveNotice()}
+                disabled={noticeSaving}
+                className="rounded-xl bg-[#8caf59] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#739b45] disabled:opacity-50"
               >
-                로그인
+                {noticeSaving ? "저장 중..." : "저장"}
               </button>
-            </div>
-          </div>
+            </>
+          )}
+
+          {!noticeEditing && (
+            <button
+              type="button"
+              onClick={() => setNoticeOpen(false)}
+              className="rounded-xl bg-[#8caf59] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#739b45]"
+            >
+              확인
+            </button>
+          )}
         </div>
-      )}
+      </div>
+    </div>
+  </div>
+)}
 
       {/* 수정 모달 */}
       {editingSong && (
@@ -2046,9 +2074,35 @@ const matchesCategory =
       {/* 본문 */}
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:py-10">
         <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[260px_minmax(0,1fr)] xl:gap-8">
-        <aside className="min-w-0 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:pr-1">
-        {/* 검색 */}
-        <div className="mb-4">
+        <aside className="min-w-0 lg:sticky lg:top-24 lg:self-start lg:pr-1">
+{/* 공지사항 미니 카드 */}
+<button
+  type="button"
+  onClick={() => {
+    setNoticeOpen(true);
+    setNoticeEditing(false);
+  }}
+  className="mb-2 w-full rounded-xl border border-[#dce8c6] bg-white px-3 py-2 text-left shadow-sm transition hover:border-[#a9c98b] hover:shadow-md"
+>
+  <div className="flex items-center justify-between gap-2">
+    <span className="text-sm font-bold text-[#416b36]">
+      📢 {notice.title || "노래책 필독사항"}
+    </span>
+    <span className="shrink-0 rounded-full bg-[#e4efd5] px-2 py-1 text-[10px] font-bold text-[#8caf59]">
+      공지
+    </span>
+  </div>
+
+  <div className="mt-1 flex items-center justify-between">
+    <span className="text-xs text-[#82936e]">
+      공지 내용 확인하기
+    </span>
+    <span className="text-xs text-[#8caf59]">자세히 보기 →</span>
+  </div>
+</button>
+
+{/* 검색 */}
+        <div className="mb-3">
           <input
             type="text"
             value={search}
@@ -2056,12 +2110,12 @@ const matchesCategory =
               setSearch(e.target.value)
             }
             placeholder="노래 제목이나 아티스트 검색..."
-            className="w-full rounded-2xl border border-[#dce8c6] bg-white/90 px-4 py-3.5 text-sm outline-none shadow-sm transition placeholder:text-[#a0ad91] focus:border-[#8caf59] focus:ring-2 focus:ring-[#8caf59]/10"
+            className="w-full rounded-xl border border-[#dce8c6] bg-white/90 px-3 py-2.5 text-sm outline-none shadow-sm transition placeholder:text-[#a0ad91] focus:border-[#8caf59] focus:ring-2 focus:ring-[#8caf59]/10"
           />
         </div>
 
         {/* 필터 */}
-        <div className="rounded-[1.5rem] border border-[#dce8c6] bg-white/85 p-4 shadow-sm sm:p-5">
+        <div className="rounded-2xl border border-[#dce8c6] bg-white/85 p-3 shadow-sm">
           <div>
             <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
               <p className="text-xs font-black tracking-wide text-[#416b36]">카테고리</p>
@@ -2251,7 +2305,7 @@ const matchesCategory =
             )}
           </div>
 
-          <div className="mt-5">
+          <div className="mt-3">
             <p className="mb-2 text-xs font-black tracking-wide text-[#416b36]">
               가수
             </p>
@@ -2328,7 +2382,7 @@ const matchesCategory =
             )}
           </div>
 
-          <div className="mt-5">
+          <div className="mt-3">
             <p className="mb-2 text-xs font-black tracking-wide text-[#416b36]">
               난이도
             </p>
