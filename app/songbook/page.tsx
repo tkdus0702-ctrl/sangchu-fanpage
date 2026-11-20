@@ -1471,9 +1471,9 @@ const getYoutubeEmbedUrl = (url: string) => {
         "";
     }
 
-    return videoId
-      ? `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`
-      : null;
+   return videoId
+  ? `https://www.youtube-nocookie.com/embed/${videoId}`
+  : null;
   } catch {
     return null;
   }
